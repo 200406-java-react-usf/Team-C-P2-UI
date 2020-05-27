@@ -1,4 +1,4 @@
-export class Ticket {
+export class NewTicket {
 
 	author_id: number;
 	cost: number;
