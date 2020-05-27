@@ -1,9 +1,20 @@
-import react from 'react';
+import React from 'react';
+
+interface ILoginProps {
+	authUser: User;
+	errorMessage: String;
+	loginAction: (username: string, password: string) => void;
+}
+
 
 function LoginComponent() {
 
 
-	return;
+	return (
+		<>
+
+		</>
+	)
 }
 
 export default LoginComponent;
