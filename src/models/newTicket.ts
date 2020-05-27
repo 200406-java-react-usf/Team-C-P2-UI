@@ -1,6 +1,5 @@
-export class Ticket {
+export class NewTicket {
 
-	ticket_id: number;
 	author_id: number;
 	cost: number;
 	origin: string;
@@ -8,9 +7,8 @@ export class Ticket {
 	departure: Date;
 	arrival: Date;
 
-	constructor(tk: number, au: number, cost: number, origin: string, dest: string, dept: Date,  arrival: Date){
+	constructor(au: number, cost: number, origin: string, dest: string, dept: Date,  arrival: Date){
 
-		this.ticket_id = tk;
 		this.author_id = au;
 		this.cost = cost;
 		this.origin = origin;
