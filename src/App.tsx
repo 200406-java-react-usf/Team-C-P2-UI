@@ -5,6 +5,7 @@ import LoginComponent from './Components/LoginComponent/LoginContainer';
 import NavBarComponent from './Components/NavBarComponent/NavBarContainer';
 import { store } from './Store';
 import { Provider } from 'react-redux';
+import LogoutComponent from './Components/LogoutComponent/LogoutContainer';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
 
         <Switch>
           <Route path="/login" render={() => <LoginComponent /> } />
+          <Route path="/logout" render={() => <LogoutComponent /> } />
         </Switch>
       </Router>
     </Provider> 
