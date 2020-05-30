@@ -150,26 +150,42 @@ function NavBarComponent(props: INavBarProps) {
         </div>
         <Divider />
 
-          <List>
+        <List>
               <ListItem button>
                 <ListItemIcon><HomeOutlinedIcon /></ListItemIcon>
                 <ListItemText>
                 <Link to="/home" className={classes.link}>HOME</Link>
                 </ListItemText>
               </ListItem>
-              <ListItem button>
-                <ListItemIcon><LoyaltyOutlinedIcon /></ListItemIcon>
-                <ListItemText>
-                  <Link to="/ticket" className={classes.link}>TICKET</Link>
-                </ListItemText>
-              </ListItem>
-              <ListItem button>
+				
+		        {/* { props.authUser?.role_id === 1 ? */}
+				<ListItem button>
+					<ListItemIcon><LoyaltyOutlinedIcon /></ListItemIcon>
+					<ListItemText>
+					<Link to="/ticket" className={classes.link}>TICKET</Link>
+					</ListItemText>
+				</ListItem>
+           		{/* : <></> } */}
+
+				{/* { props.authUser?.role_id === 1 ? */}
+				<ListItem button>
+					<ListItemIcon><LoyaltyOutlinedIcon /></ListItemIcon>
+					<ListItemText>
+					<Link to="/users" className={classes.link}>USERS</Link>
+					</ListItemText>
+				</ListItem>
+           		{/* : <></> } */}
+
+				
+
+			  <ListItem button>
                 <ListItemIcon><ExitToAppOutlinedIcon /></ListItemIcon>
                 <ListItemText>
                   <Link to="/logout" className={classes.link}>EXIT</Link>
                 </ListItemText>
-              </ListItem>
-          </List>
+        	</ListItem>
+        </List> 
+
       </Drawer>
     </div>
   );
