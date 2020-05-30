@@ -7,16 +7,19 @@ import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
-import { Divider, IconButton, Menu, MenuItem, ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
+import { Divider, IconButton, ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import LoyaltyOutlinedIcon from '@material-ui/icons/LoyaltyOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
+import { User } from '../../dtos/user';
 
+interface INavBarProps {
+	authUser: User;
+}
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -88,12 +91,10 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-function NavBarComponent() {
+function NavBarComponent(props: INavBarProps) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const accountOpen = Boolean(anchorEl);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -101,14 +102,6 @@ function NavBarComponent() {
 
   const handleDrawerClose = () => {
     setOpen(false);
-  };
-
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
   };
 
   return (

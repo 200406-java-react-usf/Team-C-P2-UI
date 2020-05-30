@@ -1,11 +1,10 @@
 import { IState } from '../../reducers';
-import NavBarComponent from '../LoginComponent/LoginComponent';
 import { connect } from 'react-redux';
+import NavBarComponent from '../NavBarComponent/NavBarComponent';
 
 const mapStateToProps = (state: IState) => {
 	return {
-		authUser: state.login.authUser,
-		errorMessage: state.login.errorMessage
+		authUser: state.login.authUser
 	}
 }
 
