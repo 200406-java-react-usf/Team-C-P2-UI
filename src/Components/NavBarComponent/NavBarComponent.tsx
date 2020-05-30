@@ -12,7 +12,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
+import LoyaltyOutlinedIcon from '@material-ui/icons/LoyaltyOutlined';
+import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -77,6 +80,11 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       padding: theme.spacing(3),
     },
+    link: {
+      textDecoration: 'none',
+      fontWeight: 'bolder',
+      color: 'white'
+    }
   }),
 );
 
@@ -127,35 +135,6 @@ function NavBarComponent() {
           <Typography variant="h6" noWrap>
             Travel App
           </Typography>
-            <div>
-                <IconButton
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={accountOpen}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
-                </Menu>
-              </div>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -179,12 +158,24 @@ function NavBarComponent() {
         <Divider />
 
           <List>
-            {['Home', '', 'Send email', 'Drafts'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{text == 'Home' ? <HomeOutlinedIcon /> : <></>}</ListItemIcon>
-                <ListItemText primary={text} />
+              <ListItem button>
+                <ListItemIcon><HomeOutlinedIcon /></ListItemIcon>
+                <ListItemText>
+                <Link to="/home" className={classes.link}>HOME</Link>
+                </ListItemText>
               </ListItem>
-            ))}
+              <ListItem button>
+                <ListItemIcon><LoyaltyOutlinedIcon /></ListItemIcon>
+                <ListItemText>
+                  <Link to="/ticket" className={classes.link}>TICKET</Link>
+                </ListItemText>
+              </ListItem>
+              <ListItem button>
+                <ListItemIcon><ExitToAppOutlinedIcon /></ListItemIcon>
+                <ListItemText>
+                  <Link to="/logout" className={classes.link}>EXIT</Link>
+                </ListItemText>
+              </ListItem>
           </List>
       </Drawer>
     </div>
