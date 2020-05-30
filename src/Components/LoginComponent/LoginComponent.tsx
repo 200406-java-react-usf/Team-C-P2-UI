@@ -62,7 +62,7 @@ function LoginComponent(props: ILoginProps) {
 
 	const login = async () => {
 		props.loginAction(username, password);
-		console.log("Login Button Clicked");
+		console.log('Login Button Clicked');
 
 	}
 
