@@ -14,24 +14,22 @@ export interface ILoginState {
 export interface ILogoutState {
 	authUser: User;
 	errorMessage: string
+}
 
 export interface IRegisterState {
 	authUser: User;
 	errorMessage: string;
-
 }
 
 export interface IState {
 	login: ILoginState;
 	logout: ILogoutState;
 	register: IRegisterState;
-
 }
 
 export const state = combineReducers<IState>({
 	login: loginReducer,
-	logout: logoutReducer
-
+	logout: logoutReducer,
 	register: registerReducer
 
 })
