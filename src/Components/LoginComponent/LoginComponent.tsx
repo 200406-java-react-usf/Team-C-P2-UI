@@ -1,5 +1,5 @@
 import React from 'react';
-import { User } from '../../models/user';
+import { User } from '../../dtos/user';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import { TextField, Grid, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
