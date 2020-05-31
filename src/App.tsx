@@ -5,6 +5,7 @@ import LoginComponent from './Components/LoginComponent/LoginContainer';
 import NavBarComponent from './Components/NavBarComponent/NavBarContainer';
 import { store } from './Store';
 import { Provider } from 'react-redux';
+import UserInfoComponent from './Components/AdminComponent/UserInfoComponent'
 
 import LogoutComponent from './Components/LogoutComponent/LogoutContainer';
 import RegisterComponent from './Components/RegisterComponent/RegisterContainer';
@@ -14,6 +15,8 @@ import CreateTicketComponent from './Components/CreateTicketComponent/CreateTick
 function App() {
   return (
     <>
+      <h1>Hello</h1>
+      <UserInfoComponent />
     <Provider store={store}>
       <Router>
         <NavBarComponent />
