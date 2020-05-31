@@ -14,11 +14,11 @@ import RegisterComponent from './Components/RegisterComponent/RegisterContainer'
 function App() {
   return (
     <>
-      <h1>Hello</h1>
-      <UserInfoComponent />
+
     <Provider store={store}>
       <Router>
-        <NavBarComponent />
+      <UserInfoComponent />
+        {/* <NavBarComponent /> */}
 
         <Switch>
           <Route path="/login" render={() => <LoginComponent /> } />
