@@ -1,10 +1,19 @@
 import React from 'react';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+
+//adding material alert box
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 import { TextField, Grid, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 import { forwardRef } from 'react';
-import MaterialTable from "material-table";
+import MaterialTable, { MTableToolbar, MTablePagination, MTableBody } from 'material-table';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Check from '@material-ui/icons/Check';
@@ -20,6 +29,8 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+
+
 
 const tableIcons = {
   Add: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <AddBox {...props} ref={ref} />),
@@ -46,59 +57,128 @@ const tableIcons = {
 const useStyles = makeStyles((theme: Theme) => 
 	createStyles({
 	
-	loginContainer: {
-		display: "flex",
-        justifyContent: "center",
-        margin: 20,
-        marginTop: 40,
-        padding: 20
-	},
-	root: {
-		'& > *': {
-		  margin: theme.spacing(1),
-		  maxwidth: '25ch',
-		},
-		textAlign: 'center',
-		maxWidth: '50%'
-
-	}, 
-	form: {
-		justifyContent: 'center',
-	},
-	link: {
-		textDecoration: 'none',
-		fontWeight: 'bolder'
-	}
+	
 }));
 
 
 function UserInfoComponent() {
 
+    const { useState } = React;
+    const [selectedRow, setSelectedRow] = useState(null);
+
+    const [open, setOpen] = React.useState(false);
+
+    const [rowDataId, setRowDataId] = useState(null);
+
+    //@ts-ignore
+    const handleClickOpen = (id) => {
+      console.log(id)
+      setRowDataId(id)
+      setOpen(true);
+    };
+  
+    //@ts-ignore
+    const handleClose = () => {
+      setOpen(false);
+    };
+
+
+
 	const classes = useStyles();
 
 
 	return (
-		<>
-    <h1>UserInfoComponent</h1>
     
+		<div style={{backgroundColor:'#FAFDFC'}}>
+    <h1 style={{textAlign:'center'}}> USER </h1>
+    <Container>
+    {/* adding material Table */}
     <MaterialTable
+        //add the component
+        components={{
+            Toolbar: props => (
+                <div style={{ backgroundColor: 'white' }}>
+                    <MTableToolbar {...props} />
+                </div>
+            )
+        }}
           columns={[
-            { title: "Adı", field: "name" },
-            { title: "Soyadı", field: "surname" },
-            { title: "Doğum Yılı", field: "birthYear", type: "numeric" },
-            {
-              title: "Doğum Yeri",
-              field: "birthCity",
-              lookup: { 34: "İstanbul", 63: "Şanlıurfa" }
-            }
+            { title: "ID", field: "id" },
+            { title: "USERNAME", field: "username" },
+            { title: "PASSWORD ", field: "password" },
+            { title: "FIRSTNAME", field: "firstname"},
+            { title: "LASTNAME", field: "lastname"},
+            { title: "EMAIL", field: "email"},
+            { title: "ROLE", field: "role"},
           ]}
           icons={tableIcons}
           data={[
-            { name: "Mehmet", surname: "Baran", birthYear: 1987, birthCity: 63 }
+            { id: "1", username: "Kind", password: "password", firstname: "Cat", lastname: "Tom", email: "lala@gmail.com", role: "Admin"},
+            { id: "2", username: "Hope", password: "password", firstname: "Cat", lastname: "Tom", email: "lala@gmail.com", role: "User"},
+            { id: "3", username: "Happy", password: "password", firstname: "Cat", lastname: "Tom", email: "lala@gmail.com", role: "User"},
+            { id: "4", username: "Love", password: "password", firstname: "Cat", lastname: "Tom", email: "lala@gmail.com", role: "User"}
           ]}
-          title="Demo Title"
+          title=""
+          //to add select row to change color
+          //@ts-ignore
+          onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow?.tableData.id))}
+          options={{
+            headerStyle: {
+              backgroundColor: '#0A3729',
+              color: '#FFF'
+            },
+            rowStyle: rowData => ({
+                backgroundColor: (selectedRow === rowData.tableData.id) ? '#83C3AF' : '#FFF'
+            })
+            }}
+            //to provide the action on the table
+            actions={[
+              rowData => ({
+                icon: () => <DeleteOutline/>,
+                tooltip: 'Delete User',
+                //@ts-ignore
+                onClick: (event, rowData) => {handleClickOpen(rowData.id)}
+                // {window.confirm("You want to delete " + rowData.name); console.log(event)}
+              })
+            ]}
+            //to change the 'Action' on the column
+            localization={{
+              header: {
+              actions: 'DELETE'
+              },
+              body: {
+                emptyDataSourceMessage: 'No records to display',
+                filterRow: {
+                    filterTooltip: 'Filter'
+                },
+              }
+            }} 
         />
-		</>
+    </Container>
+    {/* dialog box */}
+    <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Delete Data Confirm"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            You are want to delete {rowDataId}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Disagree
+          </Button>
+          <Button onClick={handleClose} color="primary" autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+		</div>
 	)
 }
 
