@@ -66,7 +66,7 @@ function LoginComponent(props: ILoginProps) {
 	}
 
 	return (
-		props.authUser ? <Redirect to="" /> :
+		props.authUser ? <Redirect to="/home" /> :
 		<>
 		<div className={classes.loginContainer}>
 				<br/>
