@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 
 import LogoutComponent from './Components/LogoutComponent/LogoutContainer';
 import RegisterComponent from './Components/RegisterComponent/RegisterContainer';
+import TicketComponent from './Components/TicketComponent/TicketComponent';
 
 
 function App() {
@@ -23,6 +24,8 @@ function App() {
           <Route path="/logout" render={() => <LogoutComponent /> } />
 
           <Route path="/register" render={() => <RegisterComponent /> } />
+
+          <Route path="/tickets" render={() => <TicketComponent /> } />
 
         </Switch>
       </Router>
