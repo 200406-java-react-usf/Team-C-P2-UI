@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const travelClient = axios.create({
-	baseURL: 'http://java-react-usf-project2-team-c.s3-website-us-east-1.amazonaws.com/',
+	baseURL: 'http://project2teamcapi-env.eba-pvywbua7.us-east-1.elasticbeanstalk.com',
 	headers: {
 		'Content-Type': 'application/json'
 	},
