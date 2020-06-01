@@ -63,19 +63,18 @@ function LoginComponent(props: ILoginProps) {
 	const login = async () => {
 		props.loginAction(username, password);
 		console.log('Login Button Clicked');
-
 	}
 
 	return (
-		props.authUser ? <Redirect to="" /> :
+		props.authUser ? <Redirect to="/home" /> :
 		<>
 		<div className={classes.loginContainer}>
 				<br/>
 			<Grid className={classes.root}>
 				<form className={classes.form} noValidate autoComplete="off" >
-					<TextField onChange={updateLoginForm} id="outlined-basic" label="Username" variant="outlined" />
+					<TextField onChange={updateLoginForm} id="username" label="Username" variant="outlined" />
 						<br/>
-					<TextField onChange={updateLoginForm} id="outlined-basic" label="Password" type="password" variant="outlined" />
+					<TextField onChange={updateLoginForm} id="password" label="Password" type="password" variant="outlined" />
 				</form>
 
 				<Link to="/login" className={classes.link}> 
