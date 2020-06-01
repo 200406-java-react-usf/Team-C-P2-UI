@@ -20,21 +20,21 @@ export const loginAction = (username: string, password: string) => async (dispat
 
     } catch (e) {
 
-        let status = e.response.status;
+        let status = e.response?.status;
         if (status === 400) {
             dispatch({
                 type: loginActionTypes.BAD_REQUEST,
-                payload: e.response.data.message
+                payload: e.response?.data.message
             });
         } else if (status === 401) {
             dispatch({
                 type: loginActionTypes.INVALID_CREDENTIALS,
-                payload: e.response.data.message
+                payload: e.response?.data.message
             });
         } else {
             dispatch({
                 type: loginActionTypes.INTERNAL_SERVER_ERROR,
-                payload: e.response.data.message || 'Error: Server could not be reached'
+                payload: e.response?.data.message || 'Error: Server could not be reached'
             });
         }
     }

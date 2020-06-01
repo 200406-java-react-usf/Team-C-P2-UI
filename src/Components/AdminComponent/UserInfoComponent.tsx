@@ -153,6 +153,31 @@ function UserInfoComponent() {
                 },
               }
             }} 
+            editable={{
+              // onRowAdd: newData =>
+              //   new Promise((resolve, reject) => {
+              //     setTimeout(() => {
+              //       //@ts-ignore
+              //       setData([...data, newData]);
+                    
+              //       resolve();
+              //     }, 1000)
+              //   }),
+              onRowUpdate: (newData, oldData) =>
+                new Promise((resolve, reject) => {
+                  setTimeout(() => {
+                    //@ts-ignore
+                    const dataUpdate = [...data];
+                    //@ts-ignore
+                    const index = oldData.tableData.id;
+                    dataUpdate[index] = newData;
+                    //@ts-ignore
+                    setData([...dataUpdate]);
+      
+                    resolve();
+                  }, 1000)
+                })
+              }}
         />
     </Container>
     {/* dialog box */}
