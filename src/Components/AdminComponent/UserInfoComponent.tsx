@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { User } from '../../dtos/user';
+import { getAllUsers } from '../../remote/user-service'
 
 //adding material alert box
 import Dialog from '@material-ui/core/Dialog';
@@ -82,7 +84,38 @@ function UserInfoComponent() {
       setOpen(false);
     };
 
+    //@ts-ignore
+  const [userData, setUserData] = useState([] as User[]);
 
+    //get data
+    const getData = async()=>{
+      try{
+      console.log("did i get data?")
+      let result =  await getAllUsers(); 
+      setUserData(result);
+      }
+      catch(e){
+        console.log(e);
+      }
+    }
+
+    // userData().then((result)=>setUserData1(result));
+
+    useEffect(()=>{
+      console.log("useEffect called");
+      getData()
+    },[]);
+
+
+
+    console.log("userData:", userData);
+
+    const data = [
+      { id: "1", firstName: "Kind", lastName: "Heart", username: "Cat", password: "password", email: "lala@gmail.com", role: "Admin"},
+      { id: "2", firstName: "Hope", lastName: "Heart", username: "Cat", password: "password", email: "lala@gmail.com", role: "User"},
+      { id: "3", firstName: "Happy", lastName: "Heart", username: "Cat", password: "password", email: "lala@gmail.com", role: "User"},
+      { id: "4", firstName: "Love", lastName: "Heart", username: "Cat", password: "password", email: "lala@gmail.com", role: "User"}
+    ]
 
 	const classes = useStyles();
 
@@ -103,21 +136,21 @@ function UserInfoComponent() {
             )
         }}
           columns={[
-            { title: "ID", field: "id" },
-            { title: "USERNAME", field: "username" },
-            { title: "PASSWORD ", field: "password" },
-            { title: "FIRSTNAME", field: "firstname"},
-            { title: "LASTNAME", field: "lastname"},
-            { title: "EMAIL", field: "email"},
-            { title: "ROLE", field: "role"},
+            { title: "ID", field: "id", editable: 'never' },
+            { title: "FIRST NAME", field: "firstName", editable: 'onUpdate' },
+            { title: "LAST NAME", field: "lastName", editable: 'onUpdate' },
+            { title: "USERNAME", field: "username", editable: 'onUpdate'},
+            { title: "PASSWORD", field: "password", editable: 'onUpdate'},
+            { title: "EMAIL", field: "email", editable: 'onUpdate'},
+            { title: "ROLE", field: "role", editComponent:((props)=>
+              (<select value={props.value || ''} onChange={e => props.onChange(e.target.value)} >
+                <option value={'ADMIN'}>ADMIN</option>
+                <option value={'USER'}>USER</option>
+                </select>)) },
           ]}
+
           icons={tableIcons}
-          data={[
-            { id: "1", username: "Kind", password: "password", firstname: "Cat", lastname: "Tom", email: "lala@gmail.com", role: "Admin"},
-            { id: "2", username: "Hope", password: "password", firstname: "Cat", lastname: "Tom", email: "lala@gmail.com", role: "User"},
-            { id: "3", username: "Happy", password: "password", firstname: "Cat", lastname: "Tom", email: "lala@gmail.com", role: "User"},
-            { id: "4", username: "Love", password: "password", firstname: "Cat", lastname: "Tom", email: "lala@gmail.com", role: "User"}
-          ]}
+          data={data}
           title=""
           //to add select row to change color
           //@ts-ignore
@@ -170,6 +203,7 @@ function UserInfoComponent() {
                     const dataUpdate = [...data];
                     //@ts-ignore
                     const index = oldData.tableData.id;
+                    //@ts-ignore
                     dataUpdate[index] = newData;
                     //@ts-ignore
                     setData([...dataUpdate]);
