@@ -59,11 +59,8 @@ const useStyles = makeStyles({
         marginTop: 40,
 		padding: 20,
 		maxWidth: '85%',
-		backgroundColor:'#FAFDFC'
-	},
-	media: {
-	  height: 140,
-	},
+		backgroundColor:'#48967D',
+	}
   });
 
 function TicketComponent() {
@@ -101,7 +98,7 @@ function TicketComponent() {
 
 	return (
 		<> 
-		<Container className={classes.Container}>
+		<Card raised={true} className={classes.Container}>
 			<MaterialTable
 				components={{
 					Toolbar: props => (
@@ -156,18 +153,7 @@ function TicketComponent() {
 					}
 					}} 
 			/>
-
-						<Button onClick={async function fetchData() {
-								const response = await getTickets();
-
-								for(let ticket of response) {
-									tickets.push(ticket);
-								}
-								console.log(tickets);
-							}}>
-							GetTickets
-						</Button>
-			</Container>
+			</Card>
 			<Dialog
 				open={open}
 				onClose={handleClose}
