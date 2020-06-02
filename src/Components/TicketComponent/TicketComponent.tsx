@@ -85,16 +85,11 @@ function TicketComponent() {
 	};
 
 	let tickets: any[] = [];
-
-	useEffect(() => {
-			async function fetchData() {
-				const response = await getTickets();
-
-				for(let ticket of response) {
-					tickets.push(ticket);
-				}
-			}
-	},[])
+	
+	const test = () => {
+		console.log('Trying to get tickets')
+	}	
+		
 
 	return (
 		<> 
@@ -153,6 +148,12 @@ function TicketComponent() {
 					}
 					}} 
 			/>
+			</Card>
+			<br/>
+			<Card className={classes.Container}>
+				<Button onClick={test}>
+					GET TICKETS
+				</Button>
 			</Card>
 			<Dialog
 				open={open}
