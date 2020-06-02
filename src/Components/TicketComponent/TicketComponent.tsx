@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import { makeStyles } from '@material-ui/core/styles';
 
 //adding material alert box
 import Dialog from '@material-ui/core/Dialog';
@@ -9,11 +8,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import { TextField, Grid, Button, Card } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Button, Card, Typography } from '@material-ui/core';
 
 import { forwardRef } from 'react';
-import MaterialTable, { MTableToolbar, MTablePagination, MTableBody, Column } from 'material-table';
+import MaterialTable, { MTableToolbar } from 'material-table';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Check from '@material-ui/icons/Check';
@@ -30,6 +28,7 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import { getTickets } from '../../remote/ticket-service';
+import { Ticket } from '../../dtos/ticket';
 
 const tableIcons = {
   Add: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <AddBox {...props} ref={ref} />),
@@ -74,6 +73,8 @@ function TicketComponent() {
 
 	const [rowDataId, setRowDataId] = useState(null);
 
+	const [ticketsState, setTicketsState] = useState([] as Ticket[]);
+
 	const handleClickOpen = (id: any) => {
 		console.log(id);
 		setRowDataId(id);
@@ -85,15 +86,29 @@ function TicketComponent() {
 	};
 
 	let tickets: any[] = [];
-	
-	const test = () => {
-		console.log('Trying to get tickets')
-	}	
-		
+
+	useEffect(() => {
+		async function fetchTickets() {
+			const result = await getTickets();
+
+			for(let ticket of result) {
+				tickets.push(
+					
+					<Card className={classes.Container}>
+						<Typography>{ticket.id} {ticket.destination}</Typography>
+					</Card>
+				)
+			}
+			setTicketsState(tickets);
+
+		}
+		fetchTickets();
+	},[]);	
 
 	return (
 		<> 
-		<Card raised={true} className={classes.Container}>
+			{ticketsState}
+		{/* <Card raised={true} className={classes.Container}>
 			<MaterialTable
 				components={{
 					Toolbar: props => (
@@ -112,7 +127,7 @@ function TicketComponent() {
 					{ title: "ARRIVAL", field: "arrival"},
 				]}
 				icons={tableIcons}
-				data={tickets}
+				data={[]}
 				title=""
 				//Change row color when selected
 				//@ts-ignore
@@ -149,12 +164,7 @@ function TicketComponent() {
 					}} 
 			/>
 			</Card>
-			<br/>
-			<Card className={classes.Container}>
-				<Button onClick={test}>
-					GET TICKETS
-				</Button>
-			</Card>
+
 			<Dialog
 				open={open}
 				onClose={handleClose}
@@ -175,9 +185,7 @@ function TicketComponent() {
 						Confirm
 					</Button>
 				</DialogActions>
-			</Dialog>
-
-			
+			</Dialog> */}
 		</>
 	)
 }
