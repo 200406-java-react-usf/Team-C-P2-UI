@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
 			margin: 'auto',
 			marginTop: 40,
 			padding: 20,
-			width: '85%',
+			width: '50%',
 			backgroundColor:'#48967D',
 		},
 		root: {
@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		}, 
 		form: {
 			justifyContent: 'center',
+			paddingBottom: '.5em',
 		},
 		link: {
 			textDecoration: 'none',
@@ -51,7 +52,6 @@ const useStyles = makeStyles((theme: Theme) =>
 		const [password, setPassword] = useState('');
 		const [verify_password, setVerifyPassword] = useState('');
 		const [email, setEmail] = useState('');
-		const [errorMessage, setErrorMessage] = useState('');
 
 		let updateRegisterForm = (e: any) => {
 			switch(e.target.id) {
@@ -81,31 +81,34 @@ const useStyles = makeStyles((theme: Theme) =>
 		const register = async() => {
 
 			if(password !== verify_password) {
-				setErrorMessage('Passwords Do Not Match');
 			}
-
+			try {
 			let newUser = new NewUser(firstName, lastName, username, password, email);
+			console.log(newUser)
 			let response = await save(newUser);
 			console.log(response);
 			return response
+			} catch (e) {
+				console.log(e)
+			}
 		}
 
 		return (
 		<>
 		<Card raised={true} className={classes.Container}>
 			<Grid className={classes.root}>
-				<form className={classes.form} noValidate autoComplete="off" >
-					<TextField onChange={updateRegisterForm} id="first_name" label="First Name" variant="outlined" />
+				<form  noValidate autoComplete="off" >
+					<TextField className={classes.form} onChange={updateRegisterForm} id="first_name" label="First Name" variant="outlined" />
 						<br/>
-					<TextField onChange={updateRegisterForm} id="last_name" label="Last Name" variant="outlined"  />
+					<TextField className={classes.form} onChange={updateRegisterForm} id="last_name" label="Last Name" variant="outlined"  />
 						<br/>
-					<TextField onChange={updateRegisterForm} id="username" label="Username" variant="outlined" />
+					<TextField className={classes.form} onChange={updateRegisterForm} id="username" label="Username" variant="outlined" />
 						<br/>
-					<TextField onChange={updateRegisterForm} id="password" label="Password" type="password" variant="outlined" />
+					<TextField className={classes.form} onChange={updateRegisterForm} id="password" label="Password" type="password" variant="outlined" />
 						<br/>
-					<TextField onChange={updateRegisterForm} id="verify_password" label="Re-Enter Password" type="password" variant="outlined" />
+					<TextField className={classes.form} onChange={updateRegisterForm} id="verify_password" label="Re-Enter Password" type="password" variant="outlined" />
 						<br/>	
-					<TextField onChange={updateRegisterForm} id="email" label="E-mail" variant="outlined" />
+					<TextField className={classes.form} onChange={updateRegisterForm} id="email" label="E-mail" variant="outlined" />
 				</form>
 
 				{/* <Link to="/home" className={classes.link}>  */}
