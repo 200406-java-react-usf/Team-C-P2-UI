@@ -198,7 +198,7 @@ function UserInfoComponent() {
               //   }),
               onRowUpdate: (newData, oldData) =>
                 new Promise((resolve, reject) => {
-                  setTimeout(() => {
+        
                     //@ts-ignore
                     const dataUpdate = [...data];
                     //@ts-ignore
@@ -209,7 +209,6 @@ function UserInfoComponent() {
                     setData([...dataUpdate]);
       
                     resolve();
-                  }, 1000)
                 })
               }}
         />
