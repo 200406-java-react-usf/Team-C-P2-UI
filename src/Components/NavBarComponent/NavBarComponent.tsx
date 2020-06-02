@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
+      backgroundColor: '#0A3729'
     },
     appBarShift: {
       marginLeft: drawerWidth,
@@ -52,6 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: drawerWidth,
       flexShrink: 0,
       whiteSpace: 'nowrap',
+      backgroundColor: '#285345'
     },
     drawerOpen: {
       width: drawerWidth,
@@ -59,6 +61,7 @@ const useStyles = makeStyles((theme: Theme) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
       }),
+      backgroundColor: '#285345'
     },
     drawerClose: {
       transition: theme.transitions.create('width', {
@@ -70,6 +73,7 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.up('sm')]: {
         width: theme.spacing(9) + 1,
       },
+      backgroundColor: '#285345'
     },
     toolbar: {
       display: 'flex',
@@ -87,7 +91,11 @@ const useStyles = makeStyles((theme: Theme) =>
       textDecoration: 'none',
       fontWeight: 'bolder',
       color: 'white'
-    }
+    },
+    icon: {
+      color: 'white'
+	},
+	
   }),
 );
 
@@ -151,40 +159,51 @@ function NavBarComponent(props: INavBarProps) {
         <Divider />
 
         <List>
-              <ListItem button>
-                <ListItemIcon><HomeOutlinedIcon /></ListItemIcon>
+        	<Link to="/home" className={classes.link}>
+            	<ListItem button>
+                	<ListItemIcon><HomeOutlinedIcon className={classes.icon} /></ListItemIcon>
                 <ListItemText>
-                <Link to="/home" className={classes.link}>HOME</Link>
+                	HOME
                 </ListItemText>
-              </ListItem>
-				
-		        {/* { props.authUser?.role_id === 1 ? */}
+            	</ListItem>
+            </Link>
+        </List>
+
+        { props.authUser ?
+        <>
+        <List>	
+			{ props.authUser?.role_id !== 1 ?
+			<Link to="/ticket" className={classes.link}>	
 				<ListItem button>
 					<ListItemIcon><LoyaltyOutlinedIcon /></ListItemIcon>
 					<ListItemText>
-					<Link to="/ticket" className={classes.link}>TICKET</Link>
+						TICKETS
 					</ListItemText>
 				</ListItem>
-           		{/* : <></> } */}
+			</Link>
+          : <></> }
 
-				{/* { props.authUser?.role_id === 1 ? */}
+			{ props.authUser?.role_id === 1 ?
+			<Link to="/users" className={classes.link}>
 				<ListItem button>
 					<ListItemIcon><LoyaltyOutlinedIcon /></ListItemIcon>
 					<ListItemText>
-					<Link to="/users" className={classes.link}>USERS</Link>
+						USERS
 					</ListItemText>
 				</ListItem>
-           		{/* : <></> } */}
-
-				
-
-			  <ListItem button>
+			</Link>	
+        : <></> }
+    	<Link to="/logout" className={classes.link}>
+			<ListItem button>
                 <ListItemIcon><ExitToAppOutlinedIcon /></ListItemIcon>
                 <ListItemText>
-                  <Link to="/logout" className={classes.link}>EXIT</Link>
+            		EXIT
                 </ListItemText>
         	</ListItem>
+		</Link>
         </List> 
+        </>
+        : <></>}
 
       </Drawer>
     </div>
