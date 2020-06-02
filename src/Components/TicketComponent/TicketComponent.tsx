@@ -29,6 +29,8 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import { getTickets } from '../../remote/ticket-service';
 import { Ticket } from '../../dtos/ticket';
+import { getAllUsers } from '../../remote/user-service';
+import { User } from '../../dtos/user';
 
 const tableIcons = {
   Add: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <AddBox {...props} ref={ref} />),
@@ -63,7 +65,7 @@ const useStyles = makeStyles({
   });
 
 function TicketComponent() {
-
+	
 	const classes = useStyles();
 
 	const { useState } = React;
@@ -85,85 +87,20 @@ function TicketComponent() {
 		setOpen(false);
 	};
 
-	let tickets: any[] = [];
+	let fetchTickets = async () => {
+			let result = await getTickets();			
+			setTicketsState(result);
+			console.log(ticketsState);
+
+			};
 
 	useEffect(() => {
-		async function fetchTickets() {
-			const result = await getTickets();
-
-			for(let ticket of result) {
-				tickets.push(
-					
-					<Card className={classes.Container}>
-						<Typography>{ticket.id} {ticket.destination}</Typography>
-					</Card>
-				)
-			}
-			setTicketsState(tickets);
-
-		}
 		fetchTickets();
+		
 	},[]);	
 
 	return (
 		<> 
-			{ticketsState}
-		{/* <Card raised={true} className={classes.Container}>
-			<MaterialTable
-				components={{
-					Toolbar: props => (
-						<div style={{ backgroundColor: 'white' }}>
-							<MTableToolbar {...props} />
-						</div>
-					)
-				}}
-				columns={[
-					{ title: "ID", field: "id" },
-					{ title: "AUTHOR", field: "author" },
-					{ title: "COST ", field: "cost" },
-					{ title: "ORIGIN", field: "origin"},
-					{ title: "DESTINATION", field: "destination"},
-					{ title: "DEPARTURE", field: "departure"},
-					{ title: "ARRIVAL", field: "arrival"},
-				]}
-				icons={tableIcons}
-				data={[]}
-				title=""
-				//Change row color when selected
-				//@ts-ignore
-				onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow?.tableData.id))}
-				options={{
-					headerStyle: {
-					backgroundColor: '#0A3729',
-					color: '#FFF'
-					},
-					rowStyle: rowData => ({
-						backgroundColor: (selectedRow === rowData.tableData.id) ? '#83C3AF' : '#FFF'
-					})
-					}}
-					//Row delete action
-					actions={[
-					rowData => ({
-						icon: () => <DeleteOutline/>,
-						tooltip: 'Delete User',
-						//@ts-ignore
-						onClick: (event, rowData) => {handleClickOpen(rowData.id)}
-					})
-					]}
-					//to change the 'Action' on the column
-					localization={{
-					header: {
-					actions: 'DELETE'
-					},
-					body: {
-						emptyDataSourceMessage: 'No records to display',
-						filterRow: {
-							filterTooltip: 'Filter'
-						},
-					}
-					}} 
-			/>
-			</Card>
 
 			<Dialog
 				open={open}
