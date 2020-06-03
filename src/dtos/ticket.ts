@@ -1,21 +1,21 @@
 export class Ticket {
 
-	ticket_id: number;
+	id: number;
 	author_id: number;
 	cost: number;
 	origin: string;
 	destination: string;
-	departure: Date;
-	arrival: Date;
+	departureTime: number;
+	arrivalTime: number;
 
-	constructor(tk: number, au: number, cost: number, origin: string, dest: string, dept: Date,  arrival: Date){
+	constructor(id: number, au: number, cost: number, origin: string, dest: string, dept: number,  arrival: number){
 
-		this.ticket_id = tk;
+		this.id = id;
 		this.author_id = au;
 		this.cost = cost;
 		this.origin = origin;
 		this.destination = dest;
-		this.departure = dept;
-		this.arrival = arrival;
+		this.departureTime = dept;
+		this.arrivalTime = arrival;
 	}
 }

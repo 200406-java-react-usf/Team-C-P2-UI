@@ -5,7 +5,7 @@ import { travelClient } from './travel-client';
 
 export async function getAllUsers(): Promise<User[]> {
 
-	let response = await travelClient.get("/user");
+	let response = await travelClient.get("/users");
 	console.log(response.data);
 	return await response.data;
 }
