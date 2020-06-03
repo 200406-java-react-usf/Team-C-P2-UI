@@ -107,15 +107,12 @@ function UserInfoComponent() {
     },[]);
 
 
-
-    console.log("userData:", userData);
-
-    const data = [
-      { id: "1", firstName: "Kind", lastName: "Heart", username: "Cat", password: "password", email: "lala@gmail.com", role: "Admin"},
-      { id: "2", firstName: "Hope", lastName: "Heart", username: "Cat", password: "password", email: "lala@gmail.com", role: "User"},
-      { id: "3", firstName: "Happy", lastName: "Heart", username: "Cat", password: "password", email: "lala@gmail.com", role: "User"},
-      { id: "4", firstName: "Love", lastName: "Heart", username: "Cat", password: "password", email: "lala@gmail.com", role: "User"}
-    ]
+    // const data = [
+    //   { id: "1", firstName: "Kind", lastName: "Heart", username: "Cat", password: "password", email: "lala@gmail.com", role: "Admin"},
+    //   { id: "2", firstName: "Hope", lastName: "Heart", username: "Cat", password: "password", email: "lala@gmail.com", role: "User"},
+    //   { id: "3", firstName: "Happy", lastName: "Heart", username: "Cat", password: "password", email: "lala@gmail.com", role: "User"},
+    //   { id: "4", firstName: "Love", lastName: "Heart", username: "Cat", password: "password", email: "lala@gmail.com", role: "User"}
+    // ]
 
 	const classes = useStyles();
 
@@ -124,7 +121,7 @@ function UserInfoComponent() {
     
 		<div style={{backgroundColor:'#FAFDFC'}}>
     <h1 style={{textAlign:'center'}}> USER </h1>
-    <Container>
+    <Container style={{width : '85%'}}>
     {/* adding material Table */}
     <MaterialTable
         //add the component
@@ -140,7 +137,6 @@ function UserInfoComponent() {
             { title: "FIRST NAME", field: "firstName", editable: 'onUpdate' },
             { title: "LAST NAME", field: "lastName", editable: 'onUpdate' },
             { title: "USERNAME", field: "username", editable: 'onUpdate'},
-            { title: "PASSWORD", field: "password", editable: 'onUpdate'},
             { title: "EMAIL", field: "email", editable: 'onUpdate'},
             { title: "ROLE", field: "role", editComponent:((props)=>
               (<select value={props.value || ''} onChange={e => props.onChange(e.target.value)} >
@@ -150,7 +146,7 @@ function UserInfoComponent() {
           ]}
 
           icons={tableIcons}
-          data={data}
+          data={userData}
           title=""
           //to add select row to change color
           //@ts-ignore
@@ -177,14 +173,17 @@ function UserInfoComponent() {
             //to change the 'Action' on the column
             localization={{
               header: {
-              actions: 'DELETE'
+              actions: 'ACTIONS'
               },
               body: {
                 emptyDataSourceMessage: 'No records to display',
                 filterRow: {
                     filterTooltip: 'Filter'
                 },
-              }
+              },
+              // pagination:{
+              //     labelRowsPerPage: 'Rows per page: {10}'
+              // }
             }} 
             editable={{
               // onRowAdd: newData =>
@@ -235,6 +234,8 @@ function UserInfoComponent() {
           </Button>
         </DialogActions>
       </Dialog>
+      {/* {console.log(document.getElementsByClassName("MuiDrawer-docked makeStyles-drawerClose-8"))} */}
+
 
 		</div>
 	)
