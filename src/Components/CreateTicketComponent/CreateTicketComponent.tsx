@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { createStyles, Theme, makeStyles, Grid, TextField, Button, InputLabel, Card } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { User } from '../../dtos/user';
+import { NewTicket } from '../../dtos/newTicket';
+import { Alert } from '@material-ui/lab';
+import { createTicket } from '../../remote/ticket-service';
+import { Redirect } from 'react-router-dom';
+
+export interface ICreateTicketProps {
+	authUser: User;
+}
 
 const useStyles = makeStyles((theme: Theme) => 
 	createStyles({
@@ -36,22 +44,19 @@ const useStyles = makeStyles((theme: Theme) =>
 		}
 	}));
 
-function CreateTicketComponent() {
+function CreateTicketComponent(props: ICreateTicketProps) {
 
 	const classes = useStyles();
 
-	const [authorId, setAuthorId] = useState('');
-	const [cost, setCost] = useState('');
+	const [cost, setCost] = useState(0);
 	const [origin, setOrigin] = useState('');
 	const [destination, setDestination] = useState('');
-	const [departure, setDeparture] = useState('');
-	const [arrival, setArrival] = useState('');
+	const [departuretime, setDeparture] = useState(new Date());
+	const [arrivaltime, setArrival] = useState(new Date());
+	const [errorMessage, setErrorMessage] = useState('')
 
 	let updateTicketForm = (e: any) => {
 		switch(e.target.id) {
-			case 'author_id':
-				setAuthorId(e.target.value);
-			break;
 			case 'cost':
 				setCost(e.target.value);
 			break;
@@ -61,10 +66,10 @@ function CreateTicketComponent() {
 			case 'destination':
 				setDestination(e.target.value);
 			break;
-			case 'departure':
+			case 'departuretime':
 				setDeparture(e.target.value);
 			break;
-			case 'arrival':
+			case 'arrivaltime':
 				setArrival(e.target.value);
 			break;
 			default:
@@ -72,8 +77,17 @@ function CreateTicketComponent() {
 		}
 	}
 
-	const createTicket = async () => {
-		
+
+	const addTicket = async () => {
+
+		let newTicket = new NewTicket(props.authUser.id, cost, origin, destination, departuretime, arrivaltime)
+		try{
+			await createTicket(newTicket);
+		} catch (e) {
+			setErrorMessage(e.response.data.cause);
+		}
+
+		return (<Redirect to="/tickets" />)
 	}
 
 	return (
@@ -82,25 +96,24 @@ function CreateTicketComponent() {
 				<br/>
 			<Grid className={classes.root}>
 				<form className={classes.form} noValidate autoComplete="off" >
-					<TextField className={classes.input} onChange={updateTicketForm} type="number" label="$ Cost" variant="outlined" />
+					<TextField className={classes.input} onChange={updateTicketForm} id="cost" type="currency" label="$ Cost" variant="outlined" />
 						<br/>
-					<TextField className={classes.input} onChange={updateTicketForm} type="text" label="Origin" variant="outlined" />
+					<TextField className={classes.input} onChange={updateTicketForm} id="origin" type="text" label="Origin" variant="outlined" />
 						<br/>
-					<TextField className={classes.input} onChange={updateTicketForm} type="text" label="Destination" variant="outlined" />
+					<TextField className={classes.input} onChange={updateTicketForm} id="destination" type="text" label="Destination" variant="outlined" />
 						<br/>
 					<InputLabel className={classes.label}> Departure</InputLabel>
-					<TextField className={classes.input} onChange={updateTicketForm} type="date" variant="outlined" />
+					<TextField className={classes.input} onChange={updateTicketForm} id="departuretime" type="date" variant="outlined" />
 						<br/>
 					<InputLabel className={classes.label}> Arrival</InputLabel>
-					<TextField className={classes.input} onChange={updateTicketForm} type="date" variant="outlined" />
+					<TextField className={classes.input} onChange={updateTicketForm} id="arrivaltime" type="date" variant="outlined" />
 						<br/>
 				</form>
 
-				<Link to="/login" className={classes.link}> 
-					<Button onClick={createTicket} variant="contained">CREATE TICKET</Button>
-				</Link>
+					<Button onClick={addTicket} variant="contained">CREATE TICKET</Button>
+				
 
-				{/* {	props.errorMessage ? <Alert severity="error" variant="outlined">{props.errorMessage}</Alert> : <></> } */}
+				{errorMessage ? <Alert severity="error" variant="outlined">{errorMessage}</Alert> : <></> }
 			</Grid>
 
 			</Card>
