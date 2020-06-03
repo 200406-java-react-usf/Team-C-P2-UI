@@ -1,17 +1,16 @@
 import { IState } from '../../reducers';
-import { registerAction } from '../../actions/register-action';
+import { loginAction } from '../../actions/login-action';
 import RegisterComponent from '../RegisterComponent/RegisterComponent';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state: IState) => {
 	return {
-		authUser: state.register.authUser,
-		errorMessage: state.register.errorMessage
+		authUser: state.login.authUser,
 	}	
 }
 
 const mapDispatchToProps = {
-	registerAction
+	loginAction
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterComponent);

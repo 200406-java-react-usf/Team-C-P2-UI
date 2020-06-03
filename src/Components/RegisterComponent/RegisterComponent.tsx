@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { NewUser } from '../../dtos/newUser';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import { TextField, Grid, Button } from '@material-ui/core';
+import { TextField, Grid, Button, Card } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import { save } from '../../remote/user-service';
 import { User } from '../../dtos/user';
 
 interface IRegisterProps {
 	authUser: User;
-	errorMessage: String;
-	registerAction: (newUser: NewUser) => void;
+	loginAction: (username: string, password: string) => void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -17,9 +17,11 @@ const useStyles = makeStyles((theme: Theme) =>
 		Container: {
 			display: "flex",
 			justifyContent: "center",
-			margin: 20,
+			margin: 'auto',
 			marginTop: 40,
-			padding: 20
+			padding: 20,
+			width: '50%',
+			backgroundColor:'#48967D',
 		},
 		root: {
 			'& > *': {
@@ -28,14 +30,19 @@ const useStyles = makeStyles((theme: Theme) =>
 			},
 			textAlign: 'center',
 			maxWidth: '50%'
-	
 		}, 
 		form: {
 			justifyContent: 'center',
+			paddingBottom: '.5em',
+			color: '#FFF'
 		},
 		link: {
 			textDecoration: 'none',
 			fontWeight: 'bolder'
+		},
+		button: {
+			backgroundColor: '#0A3729',
+			color: '#FAFDFC'
 		}
 	}));
 
@@ -43,8 +50,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 		const classes = useStyles();
 
-		const [first_name, setFirstName] = useState('');
-		const [last_name, setLastName] = useState('');
+		const [firstName, setFirstName] = useState('');
+		const [lastName, setLastName] = useState('');
 		const [username, setUsername] = useState('');
 		const [password, setPassword] = useState('');
 		const [verify_password, setVerifyPassword] = useState('');
@@ -53,10 +60,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 		let updateRegisterForm = (e: any) => {
 			switch(e.target.id) {
-				case 'first_name':
+				case 'firstName':
 					setFirstName(e.target.value);
 					break;
-				case 'last_name':
+				case 'lastName':
 					setLastName(e.target.value);
 					break;
 				case 'username':
@@ -76,41 +83,52 @@ const useStyles = makeStyles((theme: Theme) =>
 			}
 		}
 
-		const register = () => {
+		const register = async() => {
 
 			if(password !== verify_password) {
-				setErrorMessage('Passwords Do Not Match');
+				setErrorMessage('Passwords must match')
 			}
-			console.log('Register Button Clicked');
+
+			let newUser = new NewUser(firstName, lastName, username, password, email);
+			
+			try {
+			await save(newUser);
+			} catch (e) {
+				setErrorMessage(e.response.data.cause)
+			}
+			await login(newUser.username, newUser.password);
+			return (<Redirect to="/home" />)
+		}
+
+		const login = async (un: string, pw: string) => {
+			await props.loginAction(un, pw);
 		}
 
 		return (
 		<>
-			<div className={classes.Container}>
-				<br/>
+		{ props.authUser ? <Redirect to="/home" /> : 
+		<Card raised={true} className={classes.Container}>
 			<Grid className={classes.root}>
-				<form className={classes.form} noValidate autoComplete="off" >
-					<TextField onChange={updateRegisterForm} label="First Name" variant="outlined" />
+				<form  noValidate autoComplete="off" >
+					<TextField className={classes.form} onChange={updateRegisterForm} id="firstName" label="First Name" variant="outlined" />
 						<br/>
-					<TextField onChange={updateRegisterForm} label="Last Name" variant="outlined"  />
+					<TextField className={classes.form} onChange={updateRegisterForm} id="lastName" label="Last Name" variant="outlined"  />
 						<br/>
-					<TextField onChange={updateRegisterForm} label="Username" variant="outlined" />
+					<TextField className={classes.form} onChange={updateRegisterForm} id="username" label="Username" variant="outlined" />
 						<br/>
-					<TextField onChange={updateRegisterForm} label="Password" type="password" variant="outlined" />
+					<TextField className={classes.form} onChange={updateRegisterForm} id="password" label="Password" type="password" variant="outlined" />
 						<br/>
-					<TextField onChange={updateRegisterForm} label="Re-Enter Password" type="password" variant="outlined" />
+					<TextField className={classes.form} onChange={updateRegisterForm} id="verify_password" label="Re-Enter Password" type="password" variant="outlined" />
 						<br/>	
-					<TextField onChange={updateRegisterForm} label="E-mail" variant="outlined" />
+					<TextField className={classes.form} onChange={updateRegisterForm} id="email" label="E-mail" variant="outlined" />
 				</form>
 
-				<Link to="/home" className={classes.link}> 
-					<Button onClick={register} variant="contained">REGISTER</Button>
-				</Link>
+					<Button className={classes.button} onClick={register} variant="contained">REGISTER</Button>
 
-				{	props.errorMessage ? <Alert severity="error" variant="outlined">{props.errorMessage}</Alert> : <></> }
+				{	errorMessage ? <Alert severity="error" variant="outlined">{errorMessage}</Alert> : <></> }
 			</Grid>
-
-			</div>	
+		</Card>
+		}	
 		</>
 		)
 	}
