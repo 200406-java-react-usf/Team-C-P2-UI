@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import { makeStyles } from '@material-ui/core/styles';
 
 //adding material alert box
 import Dialog from '@material-ui/core/Dialog';
@@ -9,11 +8,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import { TextField, Grid, Button, Card } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Button, Card, Typography } from '@material-ui/core';
 
 import { forwardRef } from 'react';
-import MaterialTable, { MTableToolbar, MTablePagination, MTableBody, Column } from 'material-table';
+import MaterialTable, { MTableToolbar } from 'material-table';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Check from '@material-ui/icons/Check';
@@ -30,6 +28,9 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import { getTickets } from '../../remote/ticket-service';
+import { Ticket } from '../../dtos/ticket';
+import { getAllUsers } from '../../remote/user-service';
+import { User } from '../../dtos/user';
 
 const tableIcons = {
   Add: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <AddBox {...props} ref={ref} />),
@@ -64,7 +65,7 @@ const useStyles = makeStyles({
   });
 
 function TicketComponent() {
-
+	
 	const classes = useStyles();
 
 	const { useState } = React;
@@ -73,6 +74,8 @@ function TicketComponent() {
 	const [open, setOpen] = React.useState(false);
 
 	const [rowDataId, setRowDataId] = useState(null);
+
+	const [ticketsState, setTicketsState] = useState([] as Ticket[]);
 
 	const handleClickOpen = (id: any) => {
 		console.log(id);
@@ -84,77 +87,21 @@ function TicketComponent() {
 		setOpen(false);
 	};
 
-	let tickets: any[] = [];
-	
-	const test = () => {
-		console.log('Trying to get tickets')
-	}	
+	let fetchTickets = async () => {
+			let result = await getTickets();			
+			setTicketsState(result);
+			console.log(ticketsState);
+
+			};
+
+	useEffect(() => {
+		fetchTickets();
 		
+	},[]);	
 
 	return (
 		<> 
-		<Card raised={true} className={classes.Container}>
-			<MaterialTable
-				components={{
-					Toolbar: props => (
-						<div style={{ backgroundColor: 'white' }}>
-							<MTableToolbar {...props} />
-						</div>
-					)
-				}}
-				columns={[
-					{ title: "ID", field: "id" },
-					{ title: "AUTHOR", field: "author" },
-					{ title: "COST ", field: "cost" },
-					{ title: "ORIGIN", field: "origin"},
-					{ title: "DESTINATION", field: "destination"},
-					{ title: "DEPARTURE", field: "departure"},
-					{ title: "ARRIVAL", field: "arrival"},
-				]}
-				icons={tableIcons}
-				data={tickets}
-				title=""
-				//Change row color when selected
-				//@ts-ignore
-				onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow?.tableData.id))}
-				options={{
-					headerStyle: {
-					backgroundColor: '#0A3729',
-					color: '#FFF'
-					},
-					rowStyle: rowData => ({
-						backgroundColor: (selectedRow === rowData.tableData.id) ? '#83C3AF' : '#FFF'
-					})
-					}}
-					//Row delete action
-					actions={[
-					rowData => ({
-						icon: () => <DeleteOutline/>,
-						tooltip: 'Delete User',
-						//@ts-ignore
-						onClick: (event, rowData) => {handleClickOpen(rowData.id)}
-					})
-					]}
-					//to change the 'Action' on the column
-					localization={{
-					header: {
-					actions: 'DELETE'
-					},
-					body: {
-						emptyDataSourceMessage: 'No records to display',
-						filterRow: {
-							filterTooltip: 'Filter'
-						},
-					}
-					}} 
-			/>
-			</Card>
-			<br/>
-			<Card className={classes.Container}>
-				<Button onClick={test}>
-					GET TICKETS
-				</Button>
-			</Card>
+
 			<Dialog
 				open={open}
 				onClose={handleClose}
@@ -175,9 +122,7 @@ function TicketComponent() {
 						Confirm
 					</Button>
 				</DialogActions>
-			</Dialog>
-
-			
+			</Dialog> */}
 		</>
 	)
 }
