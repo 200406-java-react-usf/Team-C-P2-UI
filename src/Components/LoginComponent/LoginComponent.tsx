@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 	
 	loginContainer: {
-		backgroundImage: "url('https://media.discordapp.net/attachments/713513695644483594/717045594014875718/Rainbow-Falls-6x4-B.png')",
+		backgroundImage: "url('https://cdn.discordapp.com/attachments/713513695644483594/717748604277620806/rainbow-falls-river-morning-sunrise-kerikeri.png')",
 		height: "100vh",
 		backgroundPosition: "center",
 		backgroundRepeat: "no-repeat",
@@ -29,29 +29,11 @@ const useStyles = makeStyles((theme: Theme) =>
 		alignItem: "center",
 		justifyContent: "center",
 		flexDirection: "column",
-        // margin: 20,
-        // marginTop: 40,
-        // padding: 20
 	},
-	// root: {
-	// 	'& > *': {
-	// 	  margin: theme.spacing(1),
-	// 	  maxwidth: '25ch',
-	// 	},
-	// 	textAlign: 'center',
-	// 	backgroundColor: "green",
-	// 	width: "50%",
-	// 	margin: "auto"
-		
-	// 	// maxWidth: '50%'
-
-	// }, 
 	form: {
 		display:'inline-block',
 		justifyContent: 'center',
-		margin: 'auto',
-		// backgroundColor: 'white'
-		
+		margin: 'auto',	
 	},
 	link: {
 		textDecoration: 'none',
@@ -66,10 +48,10 @@ const useStyles = makeStyles((theme: Theme) =>
 		flexDirection: "column",
 		textAlign: 'center',
 		width: '40%',
-		minHeight: 300,
+		height: '75%',
+		minHeight: 350,
 		minWidth: 275,
-		margin: "Auto",
-		// backgroundColor: '#0A3729', 
+		margin: "Auto", 
 		backgroundColor: 'rgba(10,55,41,.8)', 
 	  },
 	  pos: {
@@ -113,19 +95,6 @@ function LoginComponent(props: ILoginProps) {
 		<>
 		<div className={classes.loginContainer}>
 				
-			{/* <Grid className={classes.root}>
-				<form className={classes.form} noValidate autoComplete="off" >
-					<TextField onChange={updateLoginForm} id="username" label="Username" variant="outlined" />
-						<br/>
-					<TextField onChange={updateLoginForm} id="password" label="Password" type="password" variant="outlined" />
-				</form>
-
-				<Link to="/login" className={classes.link}> 
-					<Button onClick={login} variant="contained">LOGIN</Button>
-				</Link>
-
-				{	props.errorMessage ? <Alert severity="error" variant="outlined">{props.errorMessage}</Alert> : <></> }
-			</Grid> */}
 			<Card className={classes.root}>
 				<CardContent>
 					<div>
@@ -141,6 +110,8 @@ function LoginComponent(props: ILoginProps) {
 						<Link to="/register" className={classes.link}> 
 							<Button onClick={register} variant="contained">REGISTER</Button>
 						</Link>
+						<br/><br/>
+						{	props.errorMessage ? <Alert severity="error" variant="outlined">{props.errorMessage}</Alert> : <></> }
 					</div>
 				</CardContent>
 
