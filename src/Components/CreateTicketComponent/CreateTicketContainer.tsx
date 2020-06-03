@@ -1,6 +1,6 @@
 import { IState } from "../../reducers"
 import { connect } from "react-redux"
-import TicketComponent from "./TicketComponent"
+import CreateTicketComponent from "./CreateTicketComponent"
 
 const mapStateToProps = (state: IState) => {
 	return {
@@ -11,4 +11,4 @@ const mapStateToProps = (state: IState) => {
 const mapDispatchToProps = {
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TicketComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(CreateTicketComponent)
