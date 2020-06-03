@@ -14,6 +14,7 @@ import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import LoyaltyOutlinedIcon from '@material-ui/icons/LoyaltyOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
+import NoteAddOutlinedIcon from '@material-ui/icons/NoteAddOutlined';
 import { Link } from 'react-router-dom';
 import { User } from '../../dtos/user';
 
@@ -167,18 +168,27 @@ function NavBarComponent(props: INavBarProps) {
             	</ListItem>
             </Link>
 
+            <Link to="/tickets" className={classes.link}>	
+            	<ListItem button>
+                	<ListItemIcon><LoyaltyOutlinedIcon className={classes.icon}/></ListItemIcon>
+                	<ListItemText>
+                  		VIEW TICKETS
+                	</ListItemText>
+              	</ListItem>
+            </Link>
         { props.authUser ?
         <>
-			{ props.authUser?.role !== 'Admin' ?
-			<Link to="/tickets" className={classes.link}>	
-				<ListItem button>
-					<ListItemIcon><LoyaltyOutlinedIcon className={classes.icon}/></ListItemIcon>
-					<ListItemText>
-						TICKETS
-					</ListItemText>
-				</ListItem>
-			</Link>
-          : <></> }
+      { props.authUser?.role !== 'Admin' ?
+
+      <Link to="/create" className={classes.link}>	
+      <ListItem button>
+        <ListItemIcon><NoteAddOutlinedIcon className={classes.icon}/></ListItemIcon>
+        <ListItemText>
+          CREATE TICKET
+        </ListItemText>
+      </ListItem>
+      </Link>
+      : <></> }
 
 			{ props.authUser?.role === 'Admin' ?
 			<Link to="/users" className={classes.link}>
