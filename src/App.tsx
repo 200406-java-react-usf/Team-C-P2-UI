@@ -6,18 +6,17 @@ import NavBarComponent from './Components/NavBarComponent/NavBarContainer';
 import { store } from './Store';
 import { Provider } from 'react-redux';
 import UserInfoComponent from './Components/AdminComponent/UserInfoComponent'
-
 import LogoutComponent from './Components/LogoutComponent/LogoutContainer';
 import RegisterComponent from './Components/RegisterComponent/RegisterContainer';
-import TicketComponent from './Components/TicketComponent/TicketComponent';
-
-import CreateTicketComponent from './Components/CreateTicketComponent/CreateTicketComponent';
+import TicketComponent from './Components/TicketComponent/TicketContainer';
+import CreateTicketComponent from './Components/CreateTicketComponent/CreateTicketContainer';
 
 function App() {
   return (
     <>
     <Provider store={store}>
       <Router>
+          <NavBarComponent />
 
         <Switch>
           <Redirect  from="/" to="/login" exact />
