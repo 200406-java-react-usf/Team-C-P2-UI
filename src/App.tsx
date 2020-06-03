@@ -18,7 +18,6 @@ function App() {
     <>
     <Provider store={store}>
       <Router>
-        <NavBarComponent />
 
         <Switch>
           <Redirect  from="/" to="/login" exact />
