@@ -95,9 +95,9 @@ function TicketComponent(props: ITicketProps) {
 
 	const confirmClose = async () => {
 		//@ts-ignore
-		let response = await deleteTicketByID(rowDataId);
+		await deleteTicketByID(rowDataId);
 		setOpen(false);
-		console.log(response);
+		await fetchTickets();
 		
 	};
 
