@@ -7,11 +7,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
-import { Button, Card, Typography } from '@material-ui/core';
-
+import { Button, Card } from '@material-ui/core';
 import { forwardRef } from 'react';
-import MaterialTable, { MTableToolbar } from 'material-table';
+import MaterialTable, { Column } from 'material-table';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Check from '@material-ui/icons/Check';
@@ -27,11 +25,15 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import { getTickets } from '../../remote/ticket-service';
+import { getTickets, deleteTicketByID } from '../../remote/ticket-service';
 import { Ticket } from '../../dtos/ticket';
-import { getAllUsers } from '../../remote/user-service';
-import { User } from '../../dtos/user';
+import { Alert } from '@material-ui/lab';
 
+
+export interface TableState {
+	columns: Array<Column<Ticket>>;
+	data: Ticket[];
+}
 const tableIcons = {
   Add: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <Check {...props} ref={ref} />),
@@ -70,12 +72,11 @@ function TicketComponent() {
 
 	const { useState } = React;
 	const [selectedRow, setSelectedRow] = useState(null);
-
 	const [open, setOpen] = React.useState(false);
-
 	const [rowDataId, setRowDataId] = useState(null);
-
 	const [ticketsState, setTicketsState] = useState([] as Ticket[]);
+	const [errorMessage, setErrorMessage] = useState('');
+
 
 	const handleClickOpen = (id: any) => {
 		console.log(id);
@@ -87,20 +88,91 @@ function TicketComponent() {
 		setOpen(false);
 	};
 
-	let fetchTickets = async () => {
-			let result = await getTickets();			
-			setTicketsState(result);
-			console.log(ticketsState);
+	const confirmClose = async () => {
+		//@ts-ignore
+		let response = await deleteTicketByID(rowDataId);
+		setOpen(false);
+		console.log(response);
+		
+	};
 
-			};
+	const [state, setState] = React.useState<TableState>({
+		columns: [
+			{title: 'Id', field: "id", editable: 'never'},
+			{title: 'Author', field: "author_id", editable: 'never'},
+			{title: 'Cost', field: "cost", type: 'currency', editable: 'never'},
+			{title: 'Origin', field: 'origin', editable: 'never'},
+			{title: 'Destination', field: 'destination', editable: 'never', type: 'date'},
+			{title: 'Departure', field: 'departureTime', editable: 'never', type: 'date'},
+			{title: 'Arrival', field: 'arrivalTime', editable: 'never'}
+		],
+			data: [],
+		});
+
+	let tickets: any[] = [];
+	
+		let fetchTickets = async () => {
+			let result = await getTickets();
+			
+			for(let ticket of result) {
+				let depart = (new Date(ticket.departureTime).toDateString());
+				let arrive = (new Date(ticket.arrivalTime).toDateString());
+				ticket.departureTime = depart;
+				ticket.arrivalTime = arrive;
+
+				tickets.push(ticket);
+			}		
+			setTicketsState(tickets);
+		}
 
 	useEffect(() => {
-		fetchTickets();
-		
+		fetchTickets();	
 	},[]);	
-
+	
 	return (
 		<> 
+		<Card raised={true} className={classes.Container}>
+			<MaterialTable 
+				title="Tickets"
+				columns={state.columns}
+				data={ticketsState}
+				icons={tableIcons}
+				//@ts-ignore
+				onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow?.tableData.id))}
+				options={{
+					headerStyle: {
+						backgroundColor: '#0A3729',
+						color: '#FFF'
+					},
+					rowStyle: rowData => ({
+						backgroundColor: (selectedRow === rowData.tableData.id) ? '#83C3AF' : '#FFF'
+					})
+				}}
+				actions={[
+					rowData => ({
+						icon: () => <DeleteOutline/>,
+						tooltip: 'Delete Ticket',
+						//@ts-ignore
+						onClick: (event, rowData) => {handleClickOpen(rowData.id)}
+					})
+				]}
+				localization={{
+					header: {
+						actions: 'DELETE'
+					},
+					body: {
+						emptyDataSourceMessage: 'No Records to Display',
+						filterRow: {
+							filterTooltip: 'Filter'
+						},
+					}
+				}}
+
+				/>
+				<Card>
+					{errorMessage ? <Alert severity="error">{errorMessage}</Alert> : <></> }
+				</Card>
+		</Card>	
 
 			<Dialog
 				open={open}
@@ -118,11 +190,11 @@ function TicketComponent() {
 					<Button onClick={handleClose} color="primary">
 						Cancel
 					</Button>
-					<Button onClick={handleClose} color="primary" autoFocus>
+					<Button onClick={confirmClose} color="primary" autoFocus>
 						Confirm
 					</Button>
 				</DialogActions>
-			</Dialog> */}
+			</Dialog>
 		</>
 	)
 }
