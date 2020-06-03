@@ -3,7 +3,7 @@ import { User } from '../../dtos/user';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import { TextField, Grid, Button } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -102,6 +102,11 @@ function LoginComponent(props: ILoginProps) {
 		props.loginAction(username, password);
 		console.log('Login Button Clicked');
 	}
+	let history = useHistory();
+	const register = async () => {
+		history.push('/register')
+		console.log('Register Button Clicked');
+	}
 
 	return (
 		props.authUser ? <Redirect to="/home" /> :
@@ -132,6 +137,9 @@ function LoginComponent(props: ILoginProps) {
 							<br/><br/>
 						<Link to="/login" className={classes.link}> 
 							<Button onClick={login} variant="contained">LOGIN</Button>
+						</Link><br/><br/>
+						<Link to="/register" className={classes.link}> 
+							<Button onClick={register} variant="contained">REGISTER</Button>
 						</Link>
 					</div>
 				</CardContent>
