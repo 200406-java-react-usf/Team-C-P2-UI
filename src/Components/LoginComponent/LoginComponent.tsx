@@ -3,7 +3,12 @@ import { User } from '../../dtos/user';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import { TextField, Grid, Button } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
+
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
 interface ILoginProps {
 	authUser: User;
@@ -15,28 +20,43 @@ const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 	
 	loginContainer: {
+		backgroundImage: "url('https://cdn.discordapp.com/attachments/713513695644483594/717748604277620806/rainbow-falls-river-morning-sunrise-kerikeri.png')",
+		height: "100vh",
+		backgroundPosition: "center",
+		backgroundRepeat: "no-repeat",
+		backgroundSize: "cover",
 		display: "flex",
-        justifyContent: "center",
-        margin: 20,
-        marginTop: 40,
-        padding: 20
+		alignItem: "center",
+		justifyContent: "center",
+		flexDirection: "column",
 	},
-	root: {
-		'& > *': {
-		  margin: theme.spacing(1),
-		  maxwidth: '25ch',
-		},
-		textAlign: 'center',
-		maxWidth: '50%'
-
-	}, 
 	form: {
+		display:'inline-block',
 		justifyContent: 'center',
+		margin: 'auto',	
 	},
 	link: {
 		textDecoration: 'none',
-		fontWeight: 'bolder'
-	}
+		fontWeight: 'bolder',
+		margin:'auto'
+	},
+	//card styling
+	root: {
+		display: 'flex',
+		alignItem: "center",
+		justifyContent: "center",
+		flexDirection: "column",
+		textAlign: 'center',
+		width: '40%',
+		height: '75%',
+		minHeight: 350,
+		minWidth: 275,
+		margin: "Auto", 
+		backgroundColor: 'rgba(10,55,41,.8)', 
+	  },
+	  pos: {
+		marginBottom: 12,
+	  },
 }));
 
 
@@ -64,25 +84,38 @@ function LoginComponent(props: ILoginProps) {
 		props.loginAction(username, password);
 		console.log('Login Button Clicked');
 	}
+	let history = useHistory();
+	const register = async () => {
+		history.push('/register')
+		console.log('Register Button Clicked');
+	}
 
 	return (
 		props.authUser ? <Redirect to="/home" /> :
 		<>
 		<div className={classes.loginContainer}>
-				<br/>
-			<Grid className={classes.root}>
-				<form className={classes.form} noValidate autoComplete="off" >
-					<TextField onChange={updateLoginForm} id="username" label="Username" variant="outlined" />
-						<br/>
-					<TextField onChange={updateLoginForm} id="password" label="Password" type="password" variant="outlined" />
-				</form>
+				
+			<Card className={classes.root}>
+				<CardContent>
+					<div>
+					<form className={classes.form} noValidate autoComplete="off" >
+						<TextField style ={{backgroundColor:'white'}}onChange={updateLoginForm} id="username" label="Username" variant="outlined" />
+							<br/><br/>
+						<TextField style = {{backgroundColor:'white'}}onChange={updateLoginForm} id="password" label="Password" type="password" variant="outlined" />
+					</form>
+							<br/><br/>
+						<Link to="/login" className={classes.link}> 
+							<Button onClick={login} variant="contained">LOGIN</Button>
+						</Link><br/><br/>
+						<Link to="/register" className={classes.link}> 
+							<Button onClick={register} variant="contained">REGISTER</Button>
+						</Link>
+						<br/><br/>
+						{	props.errorMessage ? <Alert severity="error" variant="outlined">{props.errorMessage}</Alert> : <></> }
+					</div>
+				</CardContent>
 
-				<Link to="/login" className={classes.link}> 
-					<Button onClick={login} variant="contained">LOGIN</Button>
-				</Link>
-
-				{	props.errorMessage ? <Alert severity="error" variant="outlined">{props.errorMessage}</Alert> : <></> }
-			</Grid>
+    </Card>
 
 		</div>	
 		</>

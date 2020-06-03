@@ -2,7 +2,6 @@ import { combineReducers } from "redux";
 import { User } from '../dtos/user';
 import { loginReducer } from './login-reducer';
 import { logoutReducer } from "./logout-reducer";
-import { registerReducer } from './register-reducer';
 
 
 export interface ILoginState {
@@ -24,12 +23,10 @@ export interface IRegisterState {
 export interface IState {
 	login: ILoginState;
 	logout: ILogoutState;
-	register: IRegisterState;
 }
 
 export const state = combineReducers<IState>({
 	login: loginReducer,
-	logout: logoutReducer,
-	register: registerReducer
+	logout: logoutReducer
 
 })
