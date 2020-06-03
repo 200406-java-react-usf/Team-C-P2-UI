@@ -4,7 +4,6 @@ import { createStyles, makeStyles, useTheme, Theme } from '@material-ui/core/sty
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import { Divider, IconButton, ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
@@ -14,6 +13,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import LoyaltyOutlinedIcon from '@material-ui/icons/LoyaltyOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
+import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
 import { Link } from 'react-router-dom';
 import { User } from '../../dtos/user';
 
@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
+      backgroundColor: '#0A3729'
     },
     appBarShift: {
       marginLeft: drawerWidth,
@@ -52,6 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: drawerWidth,
       flexShrink: 0,
       whiteSpace: 'nowrap',
+      backgroundColor: '#285345'
     },
     drawerOpen: {
       width: drawerWidth,
@@ -59,6 +61,7 @@ const useStyles = makeStyles((theme: Theme) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
       }),
+      backgroundColor: '#285345'
     },
     drawerClose: {
       transition: theme.transitions.create('width', {
@@ -70,6 +73,7 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.up('sm')]: {
         width: theme.spacing(9) + 1,
       },
+      backgroundColor: '#285345'
     },
     toolbar: {
       display: 'flex',
@@ -87,7 +91,11 @@ const useStyles = makeStyles((theme: Theme) =>
       textDecoration: 'none',
       fontWeight: 'bolder',
       color: 'white'
-    }
+    },
+    icon: {
+      color: 'white'
+	},
+	
   }),
 );
 
@@ -150,41 +158,60 @@ function NavBarComponent(props: INavBarProps) {
         </div>
         <Divider />
 
-        <List>
-              <ListItem button>
-                <ListItemIcon><HomeOutlinedIcon /></ListItemIcon>
+        	<Link to="/home" className={classes.link}>
+            	<ListItem button>
+                	<ListItemIcon><HomeOutlinedIcon className={classes.icon} /></ListItemIcon>
                 <ListItemText>
-                <Link to="/home" className={classes.link}>HOME</Link>
+                	HOME
                 </ListItemText>
-              </ListItem>
-				
-		        {/* { props.authUser?.role_id === 1 ? */}
+            	</ListItem>
+            </Link>
+
+        { props.authUser ?
+        <>
+			{ props.authUser?.role !== 'Admin' ?
+			<Link to="/tickets" className={classes.link}>	
 				<ListItem button>
-					<ListItemIcon><LoyaltyOutlinedIcon /></ListItemIcon>
+					<ListItemIcon><LoyaltyOutlinedIcon className={classes.icon}/></ListItemIcon>
 					<ListItemText>
-					<Link to="/ticket" className={classes.link}>TICKET</Link>
+						TICKETS
 					</ListItemText>
 				</ListItem>
-           		{/* : <></> } */}
+			</Link>
+          : <></> }
 
-				{/* { props.authUser?.role_id === 1 ? */}
+			{ props.authUser?.role === 'Admin' ?
+			<Link to="/users" className={classes.link}>
 				<ListItem button>
-					<ListItemIcon><LoyaltyOutlinedIcon /></ListItemIcon>
+					<ListItemIcon><LoyaltyOutlinedIcon className={classes.icon}/></ListItemIcon>
 					<ListItemText>
-					<Link to="/users" className={classes.link}>USERS</Link>
+						USERS
 					</ListItemText>
 				</ListItem>
-           		{/* : <></> } */}
+			</Link>	
+        : <></> }
 
-				
+			<Link to="/logout" className={classes.link}>
+				<ListItem button>
+					<ListItemIcon><ExitToAppOutlinedIcon className={classes.icon}/></ListItemIcon>
+					<ListItemText>
+						EXIT
+					</ListItemText>
+				</ListItem>
+			</Link>
+        </>
+        : <></>}
 
+		{ !props.authUser ? 
+		<Link to="/login" className={classes.link}>
 			  <ListItem button>
-                <ListItemIcon><ExitToAppOutlinedIcon /></ListItemIcon>
+                <ListItemIcon><VpnKeyOutlinedIcon className={classes.icon}/></ListItemIcon>
                 <ListItemText>
-                  <Link to="/logout" className={classes.link}>EXIT</Link>
+            		LOGIN
                 </ListItemText>
         	</ListItem>
-        </List> 
+		</Link>
+		: <></> }
 
       </Drawer>
     </div>
