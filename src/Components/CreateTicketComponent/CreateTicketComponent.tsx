@@ -87,7 +87,7 @@ function CreateTicketComponent(props: ICreateTicketProps) {
 			setErrorMessage(e.response.data.cause);
 		}
 
-		return (<Redirect to="/tickets" />)
+		return <Redirect to="/tickets" />
 	}
 
 	return (
