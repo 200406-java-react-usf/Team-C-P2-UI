@@ -11,3 +11,9 @@ export async function deleteTicketByID(id: number) {
 	let response = await travelClient.delete(`/tickets/${id}`)
 	return response.data;
 }
+
+export async function getUserTickets(id: number) {
+
+	let response = await travelClient.get(`/users/${id}/tickets`)
+	return response.data;
+}
