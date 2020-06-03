@@ -168,6 +168,9 @@ function NavBarComponent(props: INavBarProps) {
             	</ListItem>
             </Link>
 
+            
+        { props.authUser ?
+        <>
             <Link to="/tickets" className={classes.link}>	
             	<ListItem button>
                 	<ListItemIcon><LoyaltyOutlinedIcon className={classes.icon}/></ListItemIcon>
@@ -176,9 +179,8 @@ function NavBarComponent(props: INavBarProps) {
                 	</ListItemText>
               	</ListItem>
             </Link>
-        { props.authUser ?
-        <>
-      { props.authUser?.role !== 'Admin' ?
+
+      { props.authUser?.role === 'User' ?
 
       <Link to="/create" className={classes.link}>	
       <ListItem button>
