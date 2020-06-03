@@ -5,7 +5,7 @@ import TicketComponent from "./TicketComponent"
 
 const mapStateToProps = (state: IState) => {
 	return {
-		authUser: state.login.authUser
+		authUser: state.login.authUser,
 	}
 }
 
