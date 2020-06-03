@@ -69,8 +69,8 @@ const useStyles = makeStyles((theme: Theme) =>
 		minHeight: 300,
 		minWidth: 275,
 		margin: "Auto",
-		backgroundColor: '#0A3729', 
-		// backgroundColor: 'rgba(255,255,255,.5)', 
+		// backgroundColor: '#0A3729', 
+		backgroundColor: 'rgba(10,55,41,.8)', 
 	  },
 	  pos: {
 		marginBottom: 12,
