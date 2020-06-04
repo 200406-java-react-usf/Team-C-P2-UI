@@ -123,7 +123,7 @@ function UserInfoComponent(props: IAdminProps) {
     <>
 		<div style={{backgroundColor:'#FAFDFC'}}>
     <h1 style={{textAlign:'center'}}> USER </h1>
-    <Container style={{width : '85%'}}>
+    <Container style={{paddingLeft:'100px'}}>
 
     {/* adding material Table */}
     <MaterialTable
@@ -194,7 +194,6 @@ function UserInfoComponent(props: IAdminProps) {
                     if(newData != oldData){
                     //@ts-ignore
                     updateUser(newData);
-                    // //@ts-ignore
                     }  
                     resolve();
                 })
