@@ -29,6 +29,7 @@ import { deleteTicketByID, getUserTickets } from '../../remote/ticket-service';
 import { Ticket } from '../../dtos/ticket';
 import { Alert } from '@material-ui/lab';
 import { User } from '../../dtos/user';
+import { Redirect } from 'react-router-dom';
 
 export interface ITicketProps {
 	authUser: User;
@@ -136,6 +137,7 @@ function TicketComponent(props: ITicketProps) {
 	
 	return (
 		<> 
+		{!props.authUser ? <Redirect to="/home"/> :
 		<Card raised={true} className={classes.Container}>
 			<MaterialTable 
 				title="Tickets"
@@ -177,7 +179,7 @@ function TicketComponent(props: ITicketProps) {
 				<Card>
 					{errorMessage ? <Alert severity="error">{errorMessage}</Alert> : <></> }
 				</Card>
-		</Card>	
+		</Card>	}
 
 			<Dialog
 				open={open}
