@@ -7,3 +7,9 @@ export const travelClient = axios.create({
 		'Content-Type': 'application/json'
 	},
 })
+
+export const config = {
+	headers: {
+		'Authorization': `${localStorage.getItem('authorization')}`
+	}
+}
