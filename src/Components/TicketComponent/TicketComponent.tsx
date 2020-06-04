@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import { makeStyles } from '@material-ui/core/styles';
 
 //adding material alert box
 import Dialog from '@material-ui/core/Dialog';
@@ -8,12 +7,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
-import { TextField, Grid, Button, Card } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-
+import { Button, Card } from '@material-ui/core';
 import { forwardRef } from 'react';
-import MaterialTable, { MTableToolbar, MTablePagination, MTableBody, Column } from 'material-table';
+import MaterialTable, { Column } from 'material-table';
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import Check from '@material-ui/icons/Check';
@@ -29,7 +25,20 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import { getTickets } from '../../remote/ticket-service';
+import { deleteTicketByID, getUserTickets, getTickets } from '../../remote/ticket-service';
+import { Ticket } from '../../dtos/ticket';
+import { Alert } from '@material-ui/lab';
+import { User } from '../../dtos/user';
+import { Redirect } from 'react-router-dom';
+
+export interface ITicketProps {
+	authUser: User;
+}
+
+export interface TableState {
+	columns: Array<Column<Ticket>>;
+	data: Ticket[];
+}
 
 const tableIcons = {
   Add: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <AddBox {...props} ref={ref} />),
@@ -63,16 +72,17 @@ const useStyles = makeStyles({
 	}
   });
 
-function TicketComponent() {
-
+function TicketComponent(props: ITicketProps) {
+	
 	const classes = useStyles();
 
 	const { useState } = React;
 	const [selectedRow, setSelectedRow] = useState(null);
-
 	const [open, setOpen] = React.useState(false);
-
 	const [rowDataId, setRowDataId] = useState(null);
+	const [ticketsState, setTicketsState] = useState([] as Ticket[]);
+	const [errorMessage, setErrorMessage] = useState('');
+
 
 	const handleClickOpen = (id: any) => {
 		console.log(id);
@@ -84,77 +94,99 @@ function TicketComponent() {
 		setOpen(false);
 	};
 
+	const confirmClose = async () => {
+		//@ts-ignore
+		await deleteTicketByID(rowDataId);
+		setOpen(false);
+		await fetchTickets();
+		
+	};
+
+
+	const [state, setState] = React.useState<TableState>({
+		columns: [
+			{title: 'Id', field: "id", editable: 'never'},
+			{title: 'Author', field: "author_id", editable: 'never'},
+			{title: 'Cost', field: "cost", type: 'currency', editable: 'never'},
+			{title: 'Origin', field: 'origin', editable: 'never'},
+			{title: 'Destination', field: 'destination', editable: 'never', type: 'date'},
+			{title: 'Departure', field: 'departureTime', editable: 'never', type: 'date'},
+			{title: 'Arrival', field: 'arrivalTime', editable: 'never'}
+		],
+			data: [],
+		});
+
 	let tickets: any[] = [];
 	
-	const test = () => {
-		console.log('Trying to get tickets')
-	}	
-		
+		let fetchTickets = async () => {
+			let result;
+			if(props.authUser?.role === 'Admin'){
+				result = await getTickets();
+			} else {
+				result = await getUserTickets(props.authUser?.id);
+			}
+			
+			for(let ticket of result) {
+				let depart = (new Date(ticket.departureTime).toDateString());
+				let arrive = (new Date(ticket.arrivalTime).toDateString());
+				ticket.departureTime = depart;
+				ticket.arrivalTime = arrive;
 
+				tickets.push(ticket);
+			}		
+			setTicketsState(tickets);
+		}
+
+	useEffect(() => {
+		fetchTickets();	
+	},[]);	
+	
 	return (
 		<> 
+		{!props.authUser ? <Redirect to="/home"/> :
 		<Card raised={true} className={classes.Container}>
-			<MaterialTable
-				components={{
-					Toolbar: props => (
-						<div style={{ backgroundColor: 'white' }}>
-							<MTableToolbar {...props} />
-						</div>
-					)
-				}}
-				columns={[
-					{ title: "ID", field: "id" },
-					{ title: "AUTHOR", field: "author" },
-					{ title: "COST ", field: "cost" },
-					{ title: "ORIGIN", field: "origin"},
-					{ title: "DESTINATION", field: "destination"},
-					{ title: "DEPARTURE", field: "departure"},
-					{ title: "ARRIVAL", field: "arrival"},
-				]}
+			<MaterialTable 
+				title="Tickets"
+				columns={state.columns}
+				data={ticketsState}
 				icons={tableIcons}
-				data={tickets}
-				title=""
-				//Change row color when selected
 				//@ts-ignore
 				onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow?.tableData.id))}
 				options={{
 					headerStyle: {
-					backgroundColor: '#0A3729',
-					color: '#FFF'
+						backgroundColor: '#0A3729',
+						color: '#FFF'
 					},
 					rowStyle: rowData => ({
 						backgroundColor: (selectedRow === rowData.tableData.id) ? '#83C3AF' : '#FFF'
 					})
-					}}
-					//Row delete action
-					actions={[
+				}}
+				actions={[
 					rowData => ({
 						icon: () => <DeleteOutline/>,
-						tooltip: 'Delete User',
+						tooltip: 'Delete Ticket',
 						//@ts-ignore
 						onClick: (event, rowData) => {handleClickOpen(rowData.id)}
 					})
-					]}
-					//to change the 'Action' on the column
-					localization={{
+				]}
+				localization={{
 					header: {
-					actions: 'DELETE'
+						actions: 'DELETE'
 					},
 					body: {
-						emptyDataSourceMessage: 'No records to display',
+						emptyDataSourceMessage: 'No Records to Display',
 						filterRow: {
 							filterTooltip: 'Filter'
 						},
 					}
-					}} 
-			/>
-			</Card>
-			<br/>
-			<Card className={classes.Container}>
-				<Button onClick={test}>
-					GET TICKETS
-				</Button>
-			</Card>
+				}}
+
+				/>
+				<Card>
+					{errorMessage ? <Alert severity="error">{errorMessage}</Alert> : <></> }
+				</Card>
+		</Card>	}
+
 			<Dialog
 				open={open}
 				onClose={handleClose}
@@ -171,13 +203,11 @@ function TicketComponent() {
 					<Button onClick={handleClose} color="primary">
 						Cancel
 					</Button>
-					<Button onClick={handleClose} color="primary" autoFocus>
+					<Button onClick={confirmClose} color="primary" autoFocus>
 						Confirm
 					</Button>
 				</DialogActions>
 			</Dialog>
-
-			
 		</>
 	)
 }

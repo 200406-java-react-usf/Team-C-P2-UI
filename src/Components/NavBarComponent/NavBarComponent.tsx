@@ -4,7 +4,6 @@ import { createStyles, makeStyles, useTheme, Theme } from '@material-ui/core/sty
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import { Divider, IconButton, ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
@@ -14,6 +13,8 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import LoyaltyOutlinedIcon from '@material-ui/icons/LoyaltyOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
+import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
+import NoteAddOutlinedIcon from '@material-ui/icons/NoteAddOutlined';
 import { Link } from 'react-router-dom';
 import { User } from '../../dtos/user';
 
@@ -158,7 +159,6 @@ function NavBarComponent(props: INavBarProps) {
         </div>
         <Divider />
 
-        <List>
         	<Link to="/home" className={classes.link}>
             	<ListItem button>
                 	<ListItemIcon><HomeOutlinedIcon className={classes.icon} /></ListItemIcon>
@@ -167,43 +167,63 @@ function NavBarComponent(props: INavBarProps) {
                 </ListItemText>
             	</ListItem>
             </Link>
-        </List>
 
+            
         { props.authUser ?
         <>
-        <List>	
-			{ props.authUser?.role_id !== 1 ?
-			<Link to="/ticket" className={classes.link}>	
-				<ListItem button>
-					<ListItemIcon><LoyaltyOutlinedIcon /></ListItemIcon>
-					<ListItemText>
-						TICKETS
-					</ListItemText>
-				</ListItem>
-			</Link>
-          : <></> }
+            <Link to="/tickets" className={classes.link}>	
+            	<ListItem button>
+                	<ListItemIcon><LoyaltyOutlinedIcon className={classes.icon}/></ListItemIcon>
+                	<ListItemText>
+                  		VIEW TICKETS
+                	</ListItemText>
+              	</ListItem>
+            </Link>
 
-			{ props.authUser?.role_id === 1 ?
+      { props.authUser?.role === 'User' ?
+
+      <Link to="/create" className={classes.link}>	
+      <ListItem button>
+        <ListItemIcon><NoteAddOutlinedIcon className={classes.icon}/></ListItemIcon>
+        <ListItemText>
+          CREATE TICKET
+        </ListItemText>
+      </ListItem>
+      </Link>
+      : <></> }
+
+			{ props.authUser?.role === 'Admin' ?
 			<Link to="/users" className={classes.link}>
 				<ListItem button>
-					<ListItemIcon><LoyaltyOutlinedIcon /></ListItemIcon>
+					<ListItemIcon><LoyaltyOutlinedIcon className={classes.icon}/></ListItemIcon>
 					<ListItemText>
 						USERS
 					</ListItemText>
 				</ListItem>
 			</Link>	
         : <></> }
-    	<Link to="/logout" className={classes.link}>
-			<ListItem button>
-                <ListItemIcon><ExitToAppOutlinedIcon /></ListItemIcon>
+
+			<Link to="/logout" className={classes.link}>
+				<ListItem button>
+					<ListItemIcon><ExitToAppOutlinedIcon className={classes.icon}/></ListItemIcon>
+					<ListItemText>
+						EXIT
+					</ListItemText>
+				</ListItem>
+			</Link>
+        </>
+        : <></>}
+
+		{ !props.authUser ? 
+		<Link to="/login" className={classes.link}>
+			  <ListItem button>
+                <ListItemIcon><VpnKeyOutlinedIcon className={classes.icon}/></ListItemIcon>
                 <ListItemText>
-            		EXIT
+            		LOGIN
                 </ListItemText>
         	</ListItem>
 		</Link>
-        </List> 
-        </>
-        : <></>}
+		: <></> }
 
       </Drawer>
     </div>

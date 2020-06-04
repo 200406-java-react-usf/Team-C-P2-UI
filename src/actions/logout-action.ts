@@ -1,7 +1,6 @@
 
 import { Dispatch } from "redux"
 import { loginActionTypes } from "./login-action";
-import { endSession } from "../remote/auth-service";
 
 export const logoutActionTypes = {
     SUCCESSFUL_LOGOUT: 'TRAVEL_APP_SUCCESSFUL_LOGOUT',
@@ -10,16 +9,9 @@ export const logoutActionTypes = {
 
 export const logoutAction = () => async (dispatch: Dispatch) => {
     try {
-        let response = await endSession();
-        console.log(`logged out: ${response}`);
         dispatch({
-            type: logoutActionTypes.SUCCESSFUL_LOGOUT,
-            payload: response
-        });
-
-        dispatch({
-            type: loginActionTypes.SUCCESSFUL_LOGIN,
-            payload: response
+            type: loginActionTypes.SUCCESSFUL_LOGOUT,
+            payload: null
         })
     } catch (e) {
         dispatch({
