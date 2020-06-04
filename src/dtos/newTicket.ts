@@ -4,8 +4,8 @@ export class NewTicket {
 	cost: number;
 	origin: string;
 	destination: string;
-	departure: Date;
-	arrival: Date;
+	departuretime: Date;
+	arrivaltime: Date;
 
 	constructor(au: number, cost: number, origin: string, dest: string, dept: Date,  arrival: Date){
 
@@ -13,7 +13,7 @@ export class NewTicket {
 		this.cost = cost;
 		this.origin = origin;
 		this.destination = dest;
-		this.departure = dept;
-		this.arrival = arrival;
+		this.departuretime = dept;
+		this.arrivaltime = arrival;
 	}
 }

@@ -25,15 +25,21 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import { getTickets, deleteTicketByID } from '../../remote/ticket-service';
+import { deleteTicketByID, getUserTickets, getTickets } from '../../remote/ticket-service';
 import { Ticket } from '../../dtos/ticket';
 import { Alert } from '@material-ui/lab';
+import { User } from '../../dtos/user';
+import { Redirect } from 'react-router-dom';
 
+export interface ITicketProps {
+	authUser: User;
+}
 
 export interface TableState {
 	columns: Array<Column<Ticket>>;
 	data: Ticket[];
 }
+
 const tableIcons = {
   Add: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <Check {...props} ref={ref} />),
@@ -66,7 +72,7 @@ const useStyles = makeStyles({
 	}
   });
 
-function TicketComponent() {
+function TicketComponent(props: ITicketProps) {
 	
 	const classes = useStyles();
 
@@ -90,11 +96,12 @@ function TicketComponent() {
 
 	const confirmClose = async () => {
 		//@ts-ignore
-		let response = await deleteTicketByID(rowDataId);
+		await deleteTicketByID(rowDataId);
 		setOpen(false);
-		console.log(response);
+		await fetchTickets();
 		
 	};
+
 
 	const [state, setState] = React.useState<TableState>({
 		columns: [
@@ -112,7 +119,12 @@ function TicketComponent() {
 	let tickets: any[] = [];
 	
 		let fetchTickets = async () => {
-			let result = await getTickets();
+			let result;
+			if(props.authUser?.role === 'Admin'){
+				result = await getTickets();
+			} else {
+				result = await getUserTickets(props.authUser?.id);
+			}
 			
 			for(let ticket of result) {
 				let depart = (new Date(ticket.departureTime).toDateString());
@@ -131,6 +143,7 @@ function TicketComponent() {
 	
 	return (
 		<> 
+		{!props.authUser ? <Redirect to="/home"/> :
 		<Card raised={true} className={classes.Container}>
 			<MaterialTable 
 				title="Tickets"
@@ -172,7 +185,7 @@ function TicketComponent() {
 				<Card>
 					{errorMessage ? <Alert severity="error">{errorMessage}</Alert> : <></> }
 				</Card>
-		</Card>	
+		</Card>	}
 
 			<Dialog
 				open={open}

@@ -6,5 +6,4 @@ export const travelClient = axios.create({
 	headers: {
 		'Content-Type': 'application/json'
 	},
-	withCredentials: true
 })
