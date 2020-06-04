@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { User } from '../../dtos/user';
-import { getAllUsers } from '../../remote/user-service'
+import { getAllUsers, deleteUserById, updateUserById } from '../../remote/user-service'
 
 //adding material alert box
 import Dialog from '@material-ui/core/Dialog';
@@ -67,31 +67,35 @@ function UserInfoComponent() {
 
     const { useState } = React;
     const [selectedRow, setSelectedRow] = useState(null);
-
     const [open, setOpen] = React.useState(false);
-
     const [rowDataId, setRowDataId] = useState(null);
-
+    const [refresh, setRefresh] = useState(0); //refresh the table
+        //@ts-ignore
+    const [userData, setUserData] = useState([] as User[]);
+    
+    let inc = 0;
+    
     //@ts-ignore
     const handleClickOpen = (id) => {
-      console.log(id)
       setRowDataId(id)
       setOpen(true);
     };
-  
-    //@ts-ignore
-    const handleClose = () => {
-      setOpen(false);
-    };
 
+    //delete user by id
     //@ts-ignore
-  const [userData, setUserData] = useState([] as User[]);
+    const handleClose = async (e) => {
+      setOpen(false);
+      if (e.currentTarget.value == 'Agree'){
+        await deleteUserById(rowDataId)
+        setRefresh(++inc);   
+      }
+    };
 
     //get data
     const getData = async()=>{
       try{
-      console.log("did i get data?")
       let result =  await getAllUsers(); 
+      result.sort(function(a,b){return a.id - b.id})
       setUserData(result);
       }
       catch(e){
@@ -99,12 +103,22 @@ function UserInfoComponent() {
       }
     }
 
-    // userData().then((result)=>setUserData1(result));
+    //update data
+    const updateUser = async(newData: User)=>{
+      try{
+        await updateUserById(newData.id, newData.username, 'password', newData.firstName, newData.lastName, newData.email, newData.role); 
+        setRefresh(++inc);  
+      }
+      catch(e){
+        console.log(e);
+      }
+    }
+
 
     useEffect(()=>{
       console.log("useEffect called");
       getData()
-    },[]);
+    },[refresh]);
 
 
     // const data = [
@@ -122,6 +136,7 @@ function UserInfoComponent() {
 		<div style={{backgroundColor:'#FAFDFC'}}>
     <h1 style={{textAlign:'center'}}> USER </h1>
     <Container style={{width : '85%'}}>
+
     {/* adding material Table */}
     <MaterialTable
         //add the component
@@ -133,7 +148,7 @@ function UserInfoComponent() {
             )
         }}
           columns={[
-            { title: "ID", field: "id", editable: 'never' },
+            { title: "ID", field: "id", editable: 'never'},
             { title: "FIRST NAME", field: "firstName", editable: 'onUpdate' },
             { title: "LAST NAME", field: "lastName", editable: 'onUpdate' },
             { title: "USERNAME", field: "username", editable: 'onUpdate'},
@@ -158,7 +173,9 @@ function UserInfoComponent() {
             },
             rowStyle: rowData => ({
                 backgroundColor: (selectedRow === rowData.tableData.id) ? '#83C3AF' : '#FFF'
-            })
+            }),
+            //add sorting
+            sorting: true
             }}
             //to provide the action on the table
             actions={[
@@ -167,7 +184,6 @@ function UserInfoComponent() {
                 tooltip: 'Delete User',
                 //@ts-ignore
                 onClick: (event, rowData) => {handleClickOpen(rowData.id)}
-                // {window.confirm("You want to delete " + rowData.name); console.log(event)}
               })
             ]}
             //to change the 'Action' on the column
@@ -186,27 +202,14 @@ function UserInfoComponent() {
               // }
             }} 
             editable={{
-              // onRowAdd: newData =>
-              //   new Promise((resolve, reject) => {
-              //     setTimeout(() => {
-              //       //@ts-ignore
-              //       setData([...data, newData]);
-                    
-              //       resolve();
-              //     }, 1000)
-              //   }),
-              onRowUpdate: (newData, oldData) =>
+              onRowUpdate: (newData: User, oldData) =>
                 new Promise((resolve, reject) => {
-        
+
+                    if(newData != oldData){
                     //@ts-ignore
-                    const dataUpdate = [...data];
-                    //@ts-ignore
-                    const index = oldData.tableData.id;
-                    //@ts-ignore
-                    dataUpdate[index] = newData;
-                    //@ts-ignore
-                    setData([...dataUpdate]);
-      
+                    updateUser(newData);
+                    // //@ts-ignore
+                    }  
                     resolve();
                 })
               }}
@@ -226,10 +229,10 @@ function UserInfoComponent() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} color="primary" value='Disagree'>
             Disagree
           </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button onClick={handleClose} color="primary" value='Agree' autoFocus>
             Agree
           </Button>
         </DialogActions>

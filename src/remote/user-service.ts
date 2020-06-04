@@ -16,3 +16,15 @@ export async function save(newUser: NewUser): Promise<User> {
 	console.log(response.data);
 	return await response.data;
 }
+
+export async function deleteUserById(id: number | null) {
+
+	let response = await travelClient.delete(`/users/${id}`)
+	return response.data;
+}
+
+export async function updateUserById(id: number | null, username: string, password: string, firstName: string, lastName: string, email: string, role: string) {
+
+	let response = await travelClient.put(`/users`, {id, username, password, firstName, lastName, email, role});
+	return response.data;
+}
