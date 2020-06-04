@@ -123,7 +123,7 @@ function TicketComponent(props: ITicketProps) {
 			if(props.authUser?.role === 'Admin'){
 				result = await getTickets();
 			} else {
-				result = await getUserTickets(props.authUser.id);
+				result = await getUserTickets(props.authUser?.id);
 			}
 			
 			for(let ticket of result) {
