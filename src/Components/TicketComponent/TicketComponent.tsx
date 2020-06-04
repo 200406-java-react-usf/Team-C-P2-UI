@@ -25,10 +25,11 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import { deleteTicketByID, getUserTickets } from '../../remote/ticket-service';
+import { deleteTicketByID, getUserTickets, getTickets } from '../../remote/ticket-service';
 import { Ticket } from '../../dtos/ticket';
 import { Alert } from '@material-ui/lab';
 import { User } from '../../dtos/user';
+import { Redirect } from 'react-router-dom';
 
 export interface ITicketProps {
 	authUser: User;
@@ -101,6 +102,7 @@ function TicketComponent(props: ITicketProps) {
 		
 	};
 
+
 	const [state, setState] = React.useState<TableState>({
 		columns: [
 			{title: 'Id', field: "id", editable: 'never'},
@@ -117,7 +119,12 @@ function TicketComponent(props: ITicketProps) {
 	let tickets: any[] = [];
 	
 		let fetchTickets = async () => {
-			let result = await getUserTickets(props.authUser.id);
+			let result;
+			if(props.authUser?.role === 'Admin'){
+				result = await getTickets();
+			} else {
+				result = await getUserTickets(props.authUser?.id);
+			}
 			
 			for(let ticket of result) {
 				let depart = (new Date(ticket.departureTime).toDateString());
@@ -136,6 +143,7 @@ function TicketComponent(props: ITicketProps) {
 	
 	return (
 		<> 
+		{!props.authUser ? <Redirect to="/home"/> :
 		<Card raised={true} className={classes.Container}>
 			<MaterialTable 
 				title="Tickets"
@@ -177,7 +185,7 @@ function TicketComponent(props: ITicketProps) {
 				<Card>
 					{errorMessage ? <Alert severity="error">{errorMessage}</Alert> : <></> }
 				</Card>
-		</Card>	
+		</Card>	}
 
 			<Dialog
 				open={open}

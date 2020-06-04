@@ -4,7 +4,7 @@ import { User } from '../../dtos/user';
 import { NewTicket } from '../../dtos/newTicket';
 import { Alert } from '@material-ui/lab';
 import { createTicket } from '../../remote/ticket-service';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link, useHistory } from 'react-router-dom'
 
 export interface ICreateTicketProps {
 	authUser: User;
@@ -77,22 +77,27 @@ function CreateTicketComponent(props: ICreateTicketProps) {
 		}
 	}
 
+	const history = useHistory();
 
 	const addTicket = async () => {
 
-		let newTicket = new NewTicket(props.authUser.id, cost, origin, destination, departuretime, arrivaltime)
+		let newTicket = new NewTicket(props.authUser?.id, cost, origin, destination, departuretime, arrivaltime)
 		try{
 			await createTicket(newTicket);
-		} catch (e) {
-			setErrorMessage(e.response.data.cause);
+			history.push('/tickets');
+		} catch (e) {			
+			setErrorMessage(e.message);
 		}
-
-		return (<Redirect to="/tickets" />)
+		
 	}
 
 	return (
+		
 		<>
-			<Card raised={true} className={classes.Container}>
+
+		{ !props.authUser ? <Redirect to="/home" /> : 
+		
+		<Card raised={true} className={classes.Container}>
 				<br/>
 			<Grid className={classes.root}>
 				<form className={classes.form} noValidate autoComplete="off" >
@@ -102,21 +107,21 @@ function CreateTicketComponent(props: ICreateTicketProps) {
 						<br/>
 					<TextField className={classes.input} onChange={updateTicketForm} id="destination" type="text" label="Destination" variant="outlined" />
 						<br/>
-					<InputLabel className={classes.label}> Departure</InputLabel>
-					<TextField className={classes.input} onChange={updateTicketForm} id="departuretime" type="date" variant="outlined" />
-						<br/>
 					<InputLabel className={classes.label}> Arrival</InputLabel>
 					<TextField className={classes.input} onChange={updateTicketForm} id="arrivaltime" type="date" variant="outlined" />
 						<br/>
+					<InputLabel className={classes.label}> Departure</InputLabel>
+					<TextField className={classes.input} onChange={updateTicketForm} id="departuretime" type="date" variant="outlined" />
+						<br/>
+					
 				</form>
-
-					<Button onClick={addTicket} variant="contained">CREATE TICKET</Button>
 				
+					<Button onClick={addTicket} variant="contained">CREATE TICKET</Button>
 
 				{errorMessage ? <Alert severity="error" variant="outlined">{errorMessage}</Alert> : <></> }
 			</Grid>
 
-			</Card>
+			</Card>}
 		</>
 	)
 }
