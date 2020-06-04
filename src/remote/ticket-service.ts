@@ -1,21 +1,23 @@
 import { travelClient } from './travel-client';
 import { NewTicket } from '../dtos/newTicket';
+import { config } from './travel-client';
+
 
 export async function getTickets() {
 
-	let response = await travelClient.get('/tickets');
+	let response = await travelClient.get('/tickets', config);
 	return await response.data;
 }
 
 export async function deleteTicketByID(id: number) {
 
-	let response = await travelClient.delete(`/tickets/${id}`)
+	let response = await travelClient.delete(`/tickets/${id}`, config)
 	return response.data;
 }
 
 export async function getUserTickets(id: number) {
 
-	let response = await travelClient.get(`/users/${id}/tickets`)
+	let response = await travelClient.get(`/users/${id}/tickets`, config)
 	return response.data;
 }
 
@@ -28,7 +30,8 @@ export async function createTicket(newTicket: NewTicket) {
 		destination: newTicket.destination,
 		departuretime: newTicket.departuretime,
 		arrivaltime: newTicket.arrivaltime
-		}	
+		},
+		config	
 	)
 	return await response.data;
 }
