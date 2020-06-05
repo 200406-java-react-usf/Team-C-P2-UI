@@ -33,7 +33,7 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
 export interface IAdminProps {
-	authUser: User;
+	authUser: User | undefined;
 }
 
 const tableIcons = {
