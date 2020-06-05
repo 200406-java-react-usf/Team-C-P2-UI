@@ -119,7 +119,7 @@ function UserInfoComponent(props: IAdminProps) {
     },[]);
 
 	return (
-    !props.authUser ? <Redirect to="/home"/> :
+    !(props.authUser?.role == 'Admin') ? <Redirect to="/home"/> :
     <>
 		<div style={{backgroundColor:'#FAFDFC'}}>
     <h1 style={{textAlign:'center'}}> USER </h1>
