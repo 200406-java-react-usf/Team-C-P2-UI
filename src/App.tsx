@@ -5,7 +5,7 @@ import LoginComponent from './Components/LoginComponent/LoginContainer';
 import NavBarComponent from './Components/NavBarComponent/NavBarContainer';
 import { store } from './Store';
 import { Provider } from 'react-redux';
-import UserInfoComponent from './Components/AdminComponent/UserInfoComponent'
+import UserInfoComponent from './Components/AdminComponent/UserInfoContainer'
 import LogoutComponent from './Components/LogoutComponent/LogoutContainer';
 import RegisterComponent from './Components/RegisterComponent/RegisterContainer';
 import TicketComponent from './Components/TicketComponent/TicketContainer';
