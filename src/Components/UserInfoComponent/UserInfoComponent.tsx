@@ -11,7 +11,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import { TextField, Grid, Button } from '@material-ui/core';
+import { TextField, Grid, Button, Card } from '@material-ui/core';
 import { Link, Redirect } from 'react-router-dom';
 
 import { forwardRef } from 'react';
@@ -56,8 +56,21 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <ViewColumn {...props} ref={ref} />)
 };
 
+  const useStyles = makeStyles({
+    Container: {
+      // display: "flex",
+      justifyContent: "center",
+      margin: 'auto',
+      marginTop: 40,
+      padding: 20,
+      maxWidth: '85%',
+      backgroundColor:'#48967D',
+    }
+    });
 
-function UserInfoComponent(props: IAdminProps) {
+  function UserInfoComponent(props: IAdminProps) {
+
+    const classes = useStyles();
 
     const { useState } = React;
     const [selectedRow, setSelectedRow] = useState(null);
@@ -66,6 +79,8 @@ function UserInfoComponent(props: IAdminProps) {
         //@ts-ignore
     const [userData, setUserData] = useState([] as User[]);
     
+
+
     //@ts-ignore
     const handleClickOpen = (id) => {
       setRowDataId(id)
@@ -121,10 +136,7 @@ function UserInfoComponent(props: IAdminProps) {
 	return (
     !(props.authUser?.role == 'Admin') ? <Redirect to="/home"/> :
     <>
-		<div style={{backgroundColor:'#FAFDFC'}}>
-    <h1 style={{textAlign:'center'}}> USER </h1>
-    <Container style={{paddingLeft:'100px'}}>
-
+    <Card raised={true} className={classes.Container}>
 
     {/* adding material Table */}
     <MaterialTable
@@ -152,7 +164,7 @@ function UserInfoComponent(props: IAdminProps) {
 
           icons={tableIcons}
           data={userData}
-          title=""
+          title="User"
           //to add select row to change color
           //@ts-ignore
           onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow?.tableData.id))}
@@ -200,7 +212,8 @@ function UserInfoComponent(props: IAdminProps) {
                 })
               }}
         />
-    </Container>
+        </Card>
+    {/* </Container> */}
     {/* dialog box */}
     <Dialog
         open={open}
@@ -223,7 +236,6 @@ function UserInfoComponent(props: IAdminProps) {
           </Button>
         </DialogActions>
       </Dialog>
-		</div>
     </>
 	)
 }
