@@ -1,6 +1,7 @@
 import { IState } from "../../reducers"
 import { connect } from "react-redux"
 import TicketComponent from "./TicketComponent"
+import { recommendAction } from "../../actions/recommend-action"
 
 const mapStateToProps = (state: IState) => {
 	return {
@@ -9,6 +10,7 @@ const mapStateToProps = (state: IState) => {
 }
 
 const mapDispatchToProps = {
+	recommendAction
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TicketComponent)
