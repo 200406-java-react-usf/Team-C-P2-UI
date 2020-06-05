@@ -12,7 +12,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { TextField, Grid, Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import { forwardRef } from 'react';
 import MaterialTable, { MTableToolbar, MTablePagination, MTableBody } from 'material-table';
@@ -32,7 +32,9 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
-
+export interface IAdminProps {
+	authUser: User;
+}
 
 const tableIcons = {
   Add: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <AddBox {...props} ref={ref} />),
@@ -55,25 +57,14 @@ const tableIcons = {
 };
 
 
-
-const useStyles = makeStyles((theme: Theme) => 
-	createStyles({
-	
-	
-}));
-
-
-function UserInfoComponent() {
+function UserInfoComponent(props: IAdminProps) {
 
     const { useState } = React;
     const [selectedRow, setSelectedRow] = useState(null);
     const [open, setOpen] = React.useState(false);
     const [rowDataId, setRowDataId] = useState(null);
-    const [refresh, setRefresh] = useState(0); //refresh the table
         //@ts-ignore
     const [userData, setUserData] = useState([] as User[]);
-    
-    let inc = 0;
     
     //@ts-ignore
     const handleClickOpen = (id) => {
@@ -85,17 +76,26 @@ function UserInfoComponent() {
     //@ts-ignore
     const handleClose = async (e) => {
       setOpen(false);
-      if (e.currentTarget.value == 'Agree'){
-        await deleteUserById(rowDataId)
-        setRefresh(++inc);   
-      }
+      await deleteData(e);
     };
 
+    //delete data
+    const deleteData = async (e: any)=>{
+      try{
+        if (e.currentTarget.value == 'Agree'){
+          await deleteUserById(rowDataId);
+          getData();
+        }
+      }catch(e){
+        console.log(e)
+      }
+    }
     //get data
     const getData = async()=>{
       try{
       let result =  await getAllUsers(); 
       result.sort(function(a,b){return a.id - b.id})
+      result.forEach(res => res['password']='*****')
       setUserData(result);
       }
       catch(e){
@@ -106,36 +106,25 @@ function UserInfoComponent() {
     //update data
     const updateUser = async(newData: User)=>{
       try{
-        await updateUserById(newData.id, newData.username, 'password', newData.firstName, newData.lastName, newData.email, newData.role); 
-        setRefresh(++inc);  
+        await updateUserById(newData.id, newData.username, newData.password, newData.firstName, newData.lastName, newData.email, newData.role); 
+        getData();
       }
       catch(e){
         console.log(e);
       }
     }
 
-
     useEffect(()=>{
-      console.log("useEffect called");
       getData()
-    },[refresh]);
-
-
-    // const data = [
-    //   { id: "1", firstName: "Kind", lastName: "Heart", username: "Cat", password: "password", email: "lala@gmail.com", role: "Admin"},
-    //   { id: "2", firstName: "Hope", lastName: "Heart", username: "Cat", password: "password", email: "lala@gmail.com", role: "User"},
-    //   { id: "3", firstName: "Happy", lastName: "Heart", username: "Cat", password: "password", email: "lala@gmail.com", role: "User"},
-    //   { id: "4", firstName: "Love", lastName: "Heart", username: "Cat", password: "password", email: "lala@gmail.com", role: "User"}
-    // ]
-
-	const classes = useStyles();
-
+    },[]);
 
 	return (
-    
+    !props.authUser ? <Redirect to="/home"/> :
+    <>
 		<div style={{backgroundColor:'#FAFDFC'}}>
     <h1 style={{textAlign:'center'}}> USER </h1>
-    <Container style={{width : '85%'}}>
+    <Container style={{paddingLeft:'100px'}}>
+
 
     {/* adding material Table */}
     <MaterialTable
@@ -158,6 +147,7 @@ function UserInfoComponent() {
                 <option value={'ADMIN'}>ADMIN</option>
                 <option value={'USER'}>USER</option>
                 </select>)) },
+            { title: "PASSWORD", field: "password", editable: 'onUpdate'},
           ]}
 
           icons={tableIcons}
@@ -197,9 +187,6 @@ function UserInfoComponent() {
                     filterTooltip: 'Filter'
                 },
               },
-              // pagination:{
-              //     labelRowsPerPage: 'Rows per page: {10}'
-              // }
             }} 
             editable={{
               onRowUpdate: (newData: User, oldData) =>
@@ -208,7 +195,6 @@ function UserInfoComponent() {
                     if(newData != oldData){
                     //@ts-ignore
                     updateUser(newData);
-                    // //@ts-ignore
                     }  
                     resolve();
                 })
@@ -237,10 +223,8 @@ function UserInfoComponent() {
           </Button>
         </DialogActions>
       </Dialog>
-      {/* {console.log(document.getElementsByClassName("MuiDrawer-docked makeStyles-drawerClose-8"))} */}
-
-
 		</div>
+    </>
 	)
 }
 
