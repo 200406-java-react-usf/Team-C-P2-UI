@@ -99,9 +99,9 @@ function LoginComponent(props: ILoginProps) {
 				<CardContent>
 					<div>
 					<form className={classes.form} noValidate autoComplete="off" >
-						<TextField style ={{backgroundColor:'white'}}onChange={updateLoginForm} id="username" label="Username" variant="outlined" />
+						<TextField style ={{backgroundColor:'white'}}onChange={updateLoginForm} id="username" placeholder="Username" variant="outlined" />
 							<br/><br/>
-						<TextField style = {{backgroundColor:'white'}}onChange={updateLoginForm} id="password" label="Password" type="password" variant="outlined" />
+						<TextField style = {{backgroundColor:'white'}}onChange={updateLoginForm} id="password" placeholder="Password" type="password" variant="outlined" />
 					</form>
 							<br/><br/>
 						<Link to="/login" className={classes.link}> 
@@ -111,7 +111,7 @@ function LoginComponent(props: ILoginProps) {
 							<Button onClick={register} variant="contained">REGISTER</Button>
 						</Link>
 						<br/><br/>
-						{	props.errorMessage ? <Alert severity="error" variant="outlined">{props.errorMessage}</Alert> : <></> }
+						{	props.errorMessage ? <Alert severity="error" variant="outlined" style={{color:'#f44336'}}>{props.errorMessage}</Alert> : <></> }
 					</div>
 				</CardContent>
 
