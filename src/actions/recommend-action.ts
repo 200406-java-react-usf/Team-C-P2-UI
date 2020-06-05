@@ -1,4 +1,3 @@
-import { getTicketById } from "../remote/ticket-service"
 import { Dispatch } from "redux"
 
 export const recommendActionTypes = {
@@ -7,13 +6,12 @@ export const recommendActionTypes = {
     INTERNAL_SERVER_ERROR: 'TRAVEL_APP_INTERNAL_SERVER_ERROR',
 }
 
-export const recommendAction = (ticket_id: number) => async (dispatch: Dispatch) => {
+export const recommendAction = (destination: string) => async (dispatch: Dispatch) => {
 
 	try {		
-		let response = await getTicketById(ticket_id);
 		dispatch({
 			type: recommendActionTypes.SUCCESSFULLY_SET_DESTINATION,
-			payload: response.destination
+			payload: destination
 		});
 
 	} catch (e) {
