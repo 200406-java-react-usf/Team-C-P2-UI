@@ -116,7 +116,7 @@ function UserInfoComponent(props: IAdminProps) {
 
     useEffect(()=>{
       getData()
-    },[]);
+    },[refresh]);
 
 	return (
     !props.authUser ? <Redirect to="/home"/> :
@@ -124,6 +124,7 @@ function UserInfoComponent(props: IAdminProps) {
 		<div style={{backgroundColor:'#FAFDFC'}}>
     <h1 style={{textAlign:'center'}}> USER </h1>
     <Container style={{paddingLeft:'100px'}}>
+
 
     {/* adding material Table */}
     <MaterialTable

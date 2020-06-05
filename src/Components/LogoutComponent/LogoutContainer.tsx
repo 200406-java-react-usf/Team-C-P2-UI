@@ -5,7 +5,7 @@ import LogoutComponent from '../LogoutComponent/LogoutComponent';
 
 const mapStateToProps = (state: IState) => {
 	return {
-		authUser: state.logout.authUser,
+		authUser: state.login.authUser,
 		errorMessage: state.logout.errorMessage
 	}
 }
