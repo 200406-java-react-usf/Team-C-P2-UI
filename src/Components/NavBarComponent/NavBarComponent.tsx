@@ -15,6 +15,7 @@ import LoyaltyOutlinedIcon from '@material-ui/icons/LoyaltyOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import VpnKeyOutlinedIcon from '@material-ui/icons/VpnKeyOutlined';
 import NoteAddOutlinedIcon from '@material-ui/icons/NoteAddOutlined';
+import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import { Link } from 'react-router-dom';
 import { User } from '../../dtos/user';
 
@@ -195,7 +196,7 @@ function NavBarComponent(props: INavBarProps) {
 			{ props.authUser?.role === 'Admin' ?
 			<Link to="/users" className={classes.link}>
 				<ListItem button>
-					<ListItemIcon><LoyaltyOutlinedIcon className={classes.icon}/></ListItemIcon>
+					<ListItemIcon><PeopleOutlineIcon className={classes.icon}/></ListItemIcon>
 					<ListItemText>
 						USERS
 					</ListItemText>

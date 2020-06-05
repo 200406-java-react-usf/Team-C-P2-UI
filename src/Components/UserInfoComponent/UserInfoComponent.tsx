@@ -125,6 +125,7 @@ function UserInfoComponent(props: IAdminProps) {
     <h1 style={{textAlign:'center'}}> USER </h1>
     <Container style={{paddingLeft:'100px'}}>
 
+
     {/* adding material Table */}
     <MaterialTable
         //add the component

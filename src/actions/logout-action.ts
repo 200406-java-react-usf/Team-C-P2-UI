@@ -10,13 +10,8 @@ export const logoutActionTypes = {
 export const logoutAction = () => async (dispatch: Dispatch) => {
     try {
         dispatch({
-            type: logoutActionTypes.SUCCESSFUL_LOGOUT,
-            payload: ''
-        });
-
-        dispatch({
             type: loginActionTypes.SUCCESSFUL_LOGOUT,
-            payload: ''
+            payload: null
         })
     } catch (e) {
         dispatch({
