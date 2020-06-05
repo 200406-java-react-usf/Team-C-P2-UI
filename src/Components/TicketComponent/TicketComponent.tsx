@@ -29,12 +29,12 @@ import { deleteTicketByID, getUserTickets, getTickets } from '../../remote/ticke
 import { Ticket } from '../../dtos/ticket';
 import { Alert } from '@material-ui/lab';
 import { User } from '../../dtos/user';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import CardTravelOutlinedIcon from '@material-ui/icons/CardTravelOutlined';
 
 export interface ITicketProps {
 	authUser: User;
-	recommendAction: (ticket_id: number) => void;
+	recommendAction: (destination: string) => void;
 }
 
 export interface TableState {
@@ -85,7 +85,6 @@ function TicketComponent(props: ITicketProps) {
 	const [ticketsState, setTicketsState] = useState([] as Ticket[]);
 	const [errorMessage, setErrorMessage] = useState('');
 
-
 	const handleClickOpen = (id: any) => {
 		console.log(id);
 		setRowDataId(id);
@@ -103,7 +102,6 @@ function TicketComponent(props: ITicketProps) {
 		fetchTickets();
 		
 	};
-
 
 	const [state, setState] = React.useState<TableState>({
 		columns: [
@@ -139,9 +137,16 @@ function TicketComponent(props: ITicketProps) {
 			setTicketsState(tickets);
 		}
 
-	const recommend = (ticket_id: number) => {
-		props.recommendAction(ticket_id);
-		return (<Redirect to="/recommendations" />)
+	const history = useHistory();
+
+	const recommend = (destination: string) => {
+		try{
+		props.recommendAction(destination);
+		} catch (e) {
+			setErrorMessage(e.message);
+		}
+		
+		history.push('/recommendations')
 	}
 
 	useEffect(() => {
@@ -179,7 +184,7 @@ function TicketComponent(props: ITicketProps) {
 						icon: () => <CardTravelOutlinedIcon/>,
 						tooltip: 'Recommendations',
 						//@ts-ignore
-						onClick: (event, rowData) => {recommend(rowData.id)}
+						onClick: (event, rowData) => {recommend(rowData.destination)}
 					})
 				]}
 				localization={{
