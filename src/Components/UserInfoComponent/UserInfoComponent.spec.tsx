@@ -31,7 +31,7 @@ const userInfoComponent = <UserInfoComponent {...props} />
         expect(wrapper.find('h1').text()).toEqual(" USER ");
     });
 
-    it('Renders div role is Admin', () => {
+    it("Renders Redirect if role is not 'Admin'", () => {
         props.authUser = undefined;
         const wrapper = shallow(<UserInfoComponent {...props}/>);
         expect(wrapper.find('Redirect')).toHaveLength(1);
@@ -40,14 +40,14 @@ const userInfoComponent = <UserInfoComponent {...props} />
     it('should have 5 buttons delete(3), update(2)', () => {
         props.authUser = {id:1, username:'aanderson', role:'Admin', email: 'df@h', password: 'pass', firstName: "john", lastName: "Eng"};
         const wrapper = mount(<UserInfoComponent {...props}/>)
-        console.log(wrapper.debug());
+        // console.log(wrapper.debug());
         expect(wrapper.find('button')).toHaveLength(5)
     });
 
-    it('should have 5 buttons delete(3), update(2)', () => {
+    it('button should call function', () => {
         props.authUser = {id:1, username:'aanderson', role:'Admin', email: 'df@h', password: 'pass', firstName: "john", lastName: "Eng"};
-        const wrapper = mount(<UserInfoComponent {...props}/>);
-        expect(wrapper.find('button')).toHaveLength(5)
+        const wrapper = mount(<UserInfoComponent {...props}/>)
+        expect(wrapper.find('button[value]')).toHaveLength(1);
     });
 
 
