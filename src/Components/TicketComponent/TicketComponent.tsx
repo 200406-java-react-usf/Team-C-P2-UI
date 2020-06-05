@@ -30,9 +30,11 @@ import { Ticket } from '../../dtos/ticket';
 import { Alert } from '@material-ui/lab';
 import { User } from '../../dtos/user';
 import { Redirect } from 'react-router-dom';
+import CardTravelOutlinedIcon from '@material-ui/icons/CardTravelOutlined';
 
 export interface ITicketProps {
 	authUser: User;
+	recommendAction: (ticket_id: number) => void;
 }
 
 export interface TableState {
@@ -96,9 +98,9 @@ function TicketComponent(props: ITicketProps) {
 
 	const confirmClose = async () => {
 		//@ts-ignore
-		await deleteTicketByID(rowDataId);
+		deleteTicketByID(rowDataId);
 		setOpen(false);
-		await fetchTickets();
+		fetchTickets();
 		
 	};
 
@@ -137,6 +139,11 @@ function TicketComponent(props: ITicketProps) {
 			setTicketsState(tickets);
 		}
 
+	const recommend = (ticket_id: number) => {
+		props.recommendAction(ticket_id);
+		return (<Redirect to="/recommendations" />)
+	}
+
 	useEffect(() => {
 		fetchTickets();	
 	},[]);	
@@ -167,11 +174,17 @@ function TicketComponent(props: ITicketProps) {
 						tooltip: 'Delete Ticket',
 						//@ts-ignore
 						onClick: (event, rowData) => {handleClickOpen(rowData.id)}
+					}),
+					rowData => ({
+						icon: () => <CardTravelOutlinedIcon/>,
+						tooltip: 'Recommendations',
+						//@ts-ignore
+						onClick: (event, rowData) => {recommend(rowData.id)}
 					})
 				]}
 				localization={{
 					header: {
-						actions: 'DELETE'
+						actions: 'OPTIONS'
 					},
 					body: {
 						emptyDataSourceMessage: 'No Records to Display',
