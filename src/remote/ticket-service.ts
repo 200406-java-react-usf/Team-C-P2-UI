@@ -15,10 +15,16 @@ export async function deleteTicketByID(id: number) {
 	return response.data;
 }
 
-export async function getUserTickets(id: number) {
+export async function getUserTickets(user_id: number) {
 
-	let response = await travelClient.get(`/users/${id}/tickets`, config)
+	let response = await travelClient.get(`/users/${user_id}/tickets`, config)	
 	return response.data;
+}
+
+export async function getTicketById(id: number) {
+
+	let response = await travelClient.get(`/tickets/${id}`, config)
+	return response.data
 }
 
 export async function createTicket(newTicket: NewTicket) {

@@ -10,6 +10,7 @@ import LogoutComponent from './Components/LogoutComponent/LogoutContainer';
 import RegisterComponent from './Components/RegisterComponent/RegisterContainer';
 import TicketComponent from './Components/TicketComponent/TicketContainer';
 import CreateTicketComponent from './Components/CreateTicketComponent/CreateTicketContainer';
+import RecommendationComponent from './Components/RecommendationComponent/RecommendationContainer';
 import HomeComponent from './Components/HomeComponent/HomeComponent';
 
 function App() {
@@ -29,6 +30,8 @@ function App() {
           <Route path="/tickets" render={() => <TicketComponent /> } />
           <Route path="/create" render={() => <CreateTicketComponent/> } />
           <Route path="/users" render={() => <UserInfoComponent /> } />
+
+          <Route path="/recommendations" render={() => <RecommendationComponent /> } />
 
         </Switch>
       </Router>

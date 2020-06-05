@@ -29,10 +29,12 @@ import { deleteTicketByID, getUserTickets, getTickets } from '../../remote/ticke
 import { Ticket } from '../../dtos/ticket';
 import { Alert } from '@material-ui/lab';
 import { User } from '../../dtos/user';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
+import CardTravelOutlinedIcon from '@material-ui/icons/CardTravelOutlined';
 
 export interface ITicketProps {
 	authUser: User;
+	recommendAction: (destination: string) => void;
 }
 
 export interface TableState {
@@ -83,7 +85,6 @@ function TicketComponent(props: ITicketProps) {
 	const [ticketsState, setTicketsState] = useState([] as Ticket[]);
 	const [errorMessage, setErrorMessage] = useState('');
 
-
 	const handleClickOpen = (id: any) => {
 		console.log(id);
 		setRowDataId(id);
@@ -98,10 +99,9 @@ function TicketComponent(props: ITicketProps) {
 		//@ts-ignore
 		await deleteTicketByID(rowDataId);
 		setOpen(false);
-		await fetchTickets();
+		fetchTickets();
 		
 	};
-
 
 	const [state, setState] = React.useState<TableState>({
 		columns: [
@@ -137,6 +137,18 @@ function TicketComponent(props: ITicketProps) {
 			setTicketsState(tickets);
 		}
 
+	const history = useHistory();
+
+	const recommend = (destination: string) => {
+		try{
+		props.recommendAction(destination);
+		} catch (e) {
+			setErrorMessage(e.message);
+		}
+		
+		history.push('/recommendations')
+	}
+
 	useEffect(() => {
 		fetchTickets();	
 	},[]);	
@@ -167,11 +179,17 @@ function TicketComponent(props: ITicketProps) {
 						tooltip: 'Delete Ticket',
 						//@ts-ignore
 						onClick: (event, rowData) => {handleClickOpen(rowData.id)}
+					}),
+					rowData => ({
+						icon: () => <CardTravelOutlinedIcon/>,
+						tooltip: 'Recommendations',
+						//@ts-ignore
+						onClick: (event, rowData) => {recommend(rowData.destination)}
 					})
 				]}
 				localization={{
 					header: {
-						actions: 'DELETE'
+						actions: 'OPTIONS'
 					},
 					body: {
 						emptyDataSourceMessage: 'No Records to Display',
