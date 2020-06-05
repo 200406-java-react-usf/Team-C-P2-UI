@@ -116,7 +116,7 @@ function UserInfoComponent(props: IAdminProps) {
 
     useEffect(()=>{
       getData()
-    },[refresh]);
+    },[]);
 
 	return (
     !props.authUser ? <Redirect to="/home"/> :
