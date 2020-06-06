@@ -22,18 +22,30 @@ export async function save(newUser: NewUser): Promise<User> {
 		 password: newUser.password,
 		 email: newUser.email,
 		 role: ''
-		}, config);
+		}, {
+			headers: {
+				Authorization: localStorage.getItem('authorization')
+			}	
+		});
 	return await response.data;
 }
 
 export async function deleteUserById(id: number | null) {
 
-	let response = await travelClient.delete(`/users/${id}` , config)
+	let response = await travelClient.delete(`/users/${id}` , {
+		headers: {
+			Authorization: localStorage.getItem('authorization')
+		}	
+	})
 	return response.data;
 }
 
 export async function updateUserById(id: number | null, username: string, password: string, firstName: string, lastName: string, email: string, role: string) {
 
-	let response = await travelClient.put(`/users`, {id, username, password, firstName, lastName, email, role}, config);
+	let response = await travelClient.put(`/users`, {id, username, password, firstName, lastName, email, role}, {
+		headers: {
+			Authorization: localStorage.getItem('authorization')
+		}	
+	});
 	return response.data;
 }

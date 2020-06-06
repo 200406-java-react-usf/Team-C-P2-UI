@@ -5,25 +5,41 @@ import { config } from './travel-client';
 
 export async function getTickets() {
 
-	let response = await travelClient.get('/tickets', config);
+	let response = await travelClient.get('/tickets', {
+		headers: {
+			Authorization: localStorage.getItem('authorization')
+		}	
+	});
 	return await response.data;
 }
 
 export async function deleteTicketByID(id: number) {
 
-	let response = await travelClient.delete(`/tickets/${id}`, config)
+	let response = await travelClient.delete(`/tickets/${id}`, {
+		headers: {
+			Authorization: localStorage.getItem('authorization')
+		}	
+	})
 	return response.data;
 }
 
 export async function getUserTickets(user_id: number) {
 
-	let response = await travelClient.get(`/users/${user_id}/tickets`, config)	
+	let response = await travelClient.get(`/users/${user_id}/tickets`, {
+		headers: {
+			Authorization: localStorage.getItem('authorization')
+		}	
+	})	
 	return response.data;
 }
 
 export async function getTicketById(id: number) {
 
-	let response = await travelClient.get(`/tickets/${id}`, config)
+	let response = await travelClient.get(`/tickets/${id}`, {
+		headers: {
+			Authorization: localStorage.getItem('authorization')
+		}	
+	})
 	return response.data
 }
 
@@ -37,7 +53,11 @@ export async function createTicket(newTicket: NewTicket) {
 		departuretime: newTicket.departuretime,
 		arrivaltime: newTicket.arrivaltime
 		},
-		config	
+		{
+			headers: {
+				Authorization: localStorage.getItem('authorization')
+			}	
+		}	
 	)
 	return await response.data;
 }
