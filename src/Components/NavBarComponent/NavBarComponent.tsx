@@ -101,6 +101,11 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
+/**
+ * Takes in an authenticated user and conditionally renders the 
+ * navigation bar based on the role of the user that is authenticated
+ * @param props authenticated user
+ */
 function NavBarComponent(props: INavBarProps) {
   const classes = useStyles();
   const theme = useTheme();

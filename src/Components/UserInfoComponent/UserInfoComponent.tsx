@@ -68,6 +68,10 @@ const tableIcons = {
     }
     });
 
+  /**
+   * Takes in an authenticated user and renders a view with a table of users
+   * @param props authenticated user
+   */
   function UserInfoComponent(props: IAdminProps) {
 
     const classes = useStyles();

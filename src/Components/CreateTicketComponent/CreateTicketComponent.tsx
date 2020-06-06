@@ -44,6 +44,10 @@ const useStyles = makeStyles((theme: Theme) =>
 		}
 	}));
 
+/**
+ * Takes in an authenticated user as state and renders a component that includes the ticket creation form
+ * @param props authenticated user
+ */
 function CreateTicketComponent(props: ICreateTicketProps) {
 
 	const classes = useStyles();
@@ -55,6 +59,10 @@ function CreateTicketComponent(props: ICreateTicketProps) {
 	const [arrivaltime, setArrival] = useState(new Date());
 	const [errorMessage, setErrorMessage] = useState('')
 
+	/**
+	 * Updates the state of the new ticket form based on the targeted element
+	 * @param e target element
+	 */
 	let updateTicketForm = (e: any) => {
 		switch(e.target.id) {
 			case 'cost':

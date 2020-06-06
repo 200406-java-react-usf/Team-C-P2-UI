@@ -74,6 +74,11 @@ const useStyles = makeStyles({
 	}
   });
 
+/**
+ * Takes in the below properties and renders a view including a 
+ * table of tickets based on the role of the authenticated user
+ * @param props authenticated user, recommend action method
+ */ 
 function TicketComponent(props: ITicketProps) {
 	
 	const classes = useStyles();
@@ -86,7 +91,6 @@ function TicketComponent(props: ITicketProps) {
 	const [errorMessage, setErrorMessage] = useState('');
 
 	const handleClickOpen = (id: any) => {
-		console.log(id);
 		setRowDataId(id);
 		setOpen(true);
 	};
@@ -139,6 +143,10 @@ function TicketComponent(props: ITicketProps) {
 
 	const history = useHistory();
 
+	/**
+	 * Takes in a ticket destination and makes a call to the recommend action to set the sate of the destination
+	 * @param destination ticket destination
+	 */
 	const recommend = (destination: string) => {
 		try{
 		props.recommendAction(destination);

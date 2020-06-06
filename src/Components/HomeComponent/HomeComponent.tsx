@@ -20,6 +20,9 @@ const useStyles = makeStyles({
 	}
   });
 
+/**
+*  Renders a component to display applicaiton summary and project team roles
+*/
 function HomeComponent() {
 
 	const classes = useStyles();
@@ -27,12 +30,12 @@ function HomeComponent() {
 	return (
 		<>
 			<Card className={classes.Container}>
-				<Typography variant="h4"> TRAVEL APP</Typography>
+				<Typography variant="h4"> TRAVEL RECOMMENDATIONS APP</Typography>
 					<br/>
 				<Typography variant="body1">
-				The travel API provides a user with a place to easily organize travel plans. 
-				The API allows users to add their travel tickets to a database consisting of 
-				information that includes the departure and arrival time. The API leverages 
+				The travel recommendations app provides a user with a place to easily organize travel plans. 
+				The app allows users to add their travel tickets to a database consisting of 
+				information that includes the departure and arrival time. This app leverages 
 				the user’s destination to provide recommended points of interest (POI’s) for the user to visit.
 				</Typography>
 					<br/>

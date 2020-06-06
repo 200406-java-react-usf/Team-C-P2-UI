@@ -9,6 +9,10 @@ interface ILogoutProps {
 	logoutAction: () => void;
 }
 
+/**
+ * Takes in the below properties and removes the authenticated user in order to log out
+ * @param props authenticated user, error message, logout action method
+ */
 function LogoutComponent(props: ILogoutProps) {
 
 	useEffect(()=>{

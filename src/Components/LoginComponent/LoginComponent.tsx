@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { User } from '../../dtos/user';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import { TextField, Grid, Button } from '@material-ui/core';
+import { TextField, Button } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 
 interface ILoginProps {
 	authUser: User;
@@ -63,7 +61,10 @@ const useStyles = makeStyles((theme: Theme) =>
 	}
 }));
 
-
+/**
+ * Takes in the following properties and renders a view for users to log into the applicaiton
+ * @param props authenticated user, error message, login action method
+ */
 function LoginComponent(props: ILoginProps) {
 
 	const classes = useStyles();
@@ -71,6 +72,10 @@ function LoginComponent(props: ILoginProps) {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 
+	/**
+	 * Takes in a target element and updates the state of the for input fields
+	 * @param e target element
+	 */
 	let updateLoginForm = (e: any) => {
 		switch(e.target.id) {
 			case 'username':
