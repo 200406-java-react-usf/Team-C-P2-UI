@@ -224,7 +224,7 @@ const tableIcons = {
         <DialogTitle id="alert-dialog-title">{"Delete Data Confirm"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            You are want to delete {rowDataId}
+          Are you sure you want to delete user id: {rowDataId}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
