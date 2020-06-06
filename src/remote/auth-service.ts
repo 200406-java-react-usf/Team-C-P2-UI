@@ -3,7 +3,7 @@ import { travelClient } from '../remote/travel-client';
 
 export async function authenticate(username: string, password: string): Promise<User> {
     let response = await travelClient.post('/auth', {username, password});
-    sessionStorage.setItem('authorization', response.headers.authorization)
+    localStorage.setItem('authorization', response.headers.authorization)
     return await response.data;
 }
 
