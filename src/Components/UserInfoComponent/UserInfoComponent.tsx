@@ -33,7 +33,7 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
 export interface IAdminProps {
-	authUser: User;
+	authUser: User | undefined;
 }
 
 const tableIcons = {
@@ -119,7 +119,7 @@ function UserInfoComponent(props: IAdminProps) {
     },[]);
 
 	return (
-    !props.authUser ? <Redirect to="/home"/> :
+    !(props.authUser?.role == 'Admin') ? <Redirect to="/home"/> :
     <>
 		<div style={{backgroundColor:'#FAFDFC'}}>
     <h1 style={{textAlign:'center'}}> USER </h1>
