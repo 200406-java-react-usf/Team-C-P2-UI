@@ -164,7 +164,7 @@ const tableIcons = {
 
           icons={tableIcons}
           data={userData}
-          title="User"
+          title="Users"
           //to add select row to change color
           //@ts-ignore
           onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow?.tableData.id))}
