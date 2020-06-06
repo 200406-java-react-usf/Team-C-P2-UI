@@ -140,7 +140,7 @@ function NavBarComponent(props: INavBarProps) {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer
+      <Drawer style={{width:'0px'}}
         variant="permanent"
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
@@ -160,7 +160,7 @@ function NavBarComponent(props: INavBarProps) {
         </div>
         <Divider />
 
-        	<Link to="/home" className={classes.link}>
+        	<Link to="/home" className={classes.link} onClick={handleDrawerClose}>
             	<ListItem button>
                 	<ListItemIcon><HomeOutlinedIcon className={classes.icon} /></ListItemIcon>
                 <ListItemText>
@@ -172,7 +172,7 @@ function NavBarComponent(props: INavBarProps) {
             
         { props.authUser ?
         <>
-            <Link to="/tickets" className={classes.link}>	
+            <Link to="/tickets" className={classes.link} onClick={handleDrawerClose}>	
             	<ListItem button>
                 	<ListItemIcon><LoyaltyOutlinedIcon className={classes.icon}/></ListItemIcon>
                 	<ListItemText>
@@ -183,7 +183,7 @@ function NavBarComponent(props: INavBarProps) {
 
       { props.authUser?.role === 'User' ?
 
-      <Link to="/create" className={classes.link}>	
+      <Link to="/create" className={classes.link} onClick={handleDrawerClose}>	
       <ListItem button>
         <ListItemIcon><NoteAddOutlinedIcon className={classes.icon}/></ListItemIcon>
         <ListItemText>
@@ -194,8 +194,8 @@ function NavBarComponent(props: INavBarProps) {
       : <></> }
 
 			{ props.authUser?.role === 'Admin' ?
-			<Link to="/users" className={classes.link}>
-				<ListItem button>
+			<Link to="/users" className={classes.link} onClick={handleDrawerClose}>
+				<ListItem button >
 					<ListItemIcon><PeopleOutlineIcon className={classes.icon}/></ListItemIcon>
 					<ListItemText>
 						USERS
@@ -204,7 +204,7 @@ function NavBarComponent(props: INavBarProps) {
 			</Link>	
         : <></> }
 
-			<Link to="/logout" className={classes.link}>
+			<Link to="/logout" className={classes.link} onClick={handleDrawerClose}>
 				<ListItem button>
 					<ListItemIcon><ExitToAppOutlinedIcon className={classes.icon}/></ListItemIcon>
 					<ListItemText>
@@ -216,7 +216,7 @@ function NavBarComponent(props: INavBarProps) {
         : <></>}
 
 		{ !props.authUser ? 
-		<Link to="/login" className={classes.link}>
+		<Link to="/login" className={classes.link} onClick={handleDrawerClose}>
 			  <ListItem button>
                 <ListItemIcon><VpnKeyOutlinedIcon className={classes.icon}/></ListItemIcon>
                 <ListItemText>
