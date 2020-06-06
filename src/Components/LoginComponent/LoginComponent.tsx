@@ -15,6 +15,9 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
+import OptimizedRainbowFallsRiverMorningSunriseKerikeri from '../../image/OptimizedRainbowFallsRiverMorningSunriseKerikeri.png';
+
+
 interface ILoginProps {
 	authUser: User;
 	errorMessage: String;
@@ -25,7 +28,8 @@ const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 	
 	loginContainer: {
-		backgroundImage: "url('https://cdn.discordapp.com/attachments/713513695644483594/717748604277620806/rainbow-falls-river-morning-sunrise-kerikeri.png')",
+		// backgroundImage: "url('https://cdn.discordapp.com/attachments/713513695644483594/717748604277620806/rainbow-falls-river-morning-sunrise-kerikeri.png')",
+		backgroundImage: `url(${OptimizedRainbowFallsRiverMorningSunriseKerikeri})`,
 		height: "calc(100vh - 64px)",
 		backgroundPosition: "center",
 		backgroundRepeat: "no-repeat",
