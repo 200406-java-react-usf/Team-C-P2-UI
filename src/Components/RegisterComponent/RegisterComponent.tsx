@@ -46,6 +46,10 @@ const useStyles = makeStyles((theme: Theme) =>
 		}
 	}));
 
+	/**
+	 * Takes in the below properties and creates a view including a user registration form
+	 * @param props authenticated user, login action method
+	 */
 	function RegisterComponent(props: IRegisterProps) {
 
 		const classes = useStyles();
@@ -58,6 +62,10 @@ const useStyles = makeStyles((theme: Theme) =>
 		const [email, setEmail] = useState('');
 		const [errorMessage, setErrorMessage] = useState('');
 
+		/**
+		 * Takes in a target element and updates the stae of the registration form fields
+		 * @param e target element
+		 */
 		let updateRegisterForm = (e: any) => {
 			switch(e.target.id) {
 				case 'firstName':

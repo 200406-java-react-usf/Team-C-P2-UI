@@ -46,6 +46,10 @@ const useStyles = makeStyles((theme: Theme) =>
 		}
 	}));
 
+/**
+ * Takes in a ticket destination as properties an renders a view including a list of recommendations based on the location
+ * @param props ticket destination, error message 
+ */
 function RecommendationComponent(props: IRecProps) {
 
 	const classes = useStyles();

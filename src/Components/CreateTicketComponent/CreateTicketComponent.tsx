@@ -4,7 +4,7 @@ import { User } from '../../dtos/user';
 import { NewTicket } from '../../dtos/newTicket';
 import { Alert } from '@material-ui/lab';
 import { createTicket } from '../../remote/ticket-service';
-import { Redirect, Link, useHistory } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 
 export interface ICreateTicketProps {
 	authUser: User;
@@ -44,6 +44,10 @@ const useStyles = makeStyles((theme: Theme) =>
 		}
 	}));
 
+/**
+ * Takes in an authenticated user as state and renders a component that includes the ticket creation form
+ * @param props authenticated user
+ */
 function CreateTicketComponent(props: ICreateTicketProps) {
 
 	const classes = useStyles();
@@ -55,6 +59,10 @@ function CreateTicketComponent(props: ICreateTicketProps) {
 	const [arrivaltime, setArrival] = useState(new Date());
 	const [errorMessage, setErrorMessage] = useState('')
 
+	/**
+	 * Updates the state of the new ticket form based on the targeted element
+	 * @param e target element
+	 */
 	let updateTicketForm = (e: any) => {
 		switch(e.target.id) {
 			case 'cost':
