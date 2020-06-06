@@ -1,3 +1,8 @@
+/**
+ * LoginComponent helps render the login page for the client to sign in using username and password.
+ * Has a login button to navigate to the home page and a register button to direct to the 
+ * registration page
+ */
 import React, { useState } from 'react';
 import { User } from '../../dtos/user';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
@@ -83,7 +88,7 @@ function LoginComponent(props: ILoginProps) {
 				console.warn(`Improper binding detected on element with id: ${e.target.id}`);
 		}
 	}
-
+	
 	const login = async () => {
 		props.loginAction(username, password);
 		console.log('Login Button Clicked');
