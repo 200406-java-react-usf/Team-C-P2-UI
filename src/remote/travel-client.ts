@@ -10,6 +10,6 @@ export const travelClient = axios.create({
 
 export const config = {
 	headers: {
-		'Authorization': `${localStorage.getItem('authorization')}`
+		'Authorization': `${sessionStorage.getItem('authorization')}`
 	}
 }
