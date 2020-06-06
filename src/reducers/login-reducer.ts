@@ -16,7 +16,8 @@ export const loginReducer = (state: ILoginState = initialState, action: AnyActio
         case loginActionTypes.SUCCESSFUL_LOGIN:
             return {
                 ...state,
-                authUser: action.payload
+                authUser: action.payload,
+                errorMessage: ''
             }
         
         case loginActionTypes.SUCCESSFUL_LOGOUT:
