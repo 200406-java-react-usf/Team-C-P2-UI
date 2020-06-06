@@ -20,8 +20,6 @@ export const loginReducer = (state: ILoginState = initialState, action: AnyActio
             }
         
         case loginActionTypes.SUCCESSFUL_LOGOUT:
-            localStorage.clear()
-            console.log(localStorage.getItem('autorization'))
             return {
                 ...state,
                 authUser: action.payload

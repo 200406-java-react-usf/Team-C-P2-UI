@@ -4,7 +4,7 @@ import { User } from '../../dtos/user';
 import { NewTicket } from '../../dtos/newTicket';
 import { Alert } from '@material-ui/lab';
 import { createTicket } from '../../remote/ticket-service';
-import { Redirect, Link, useHistory } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 
 export interface ICreateTicketProps {
 	authUser: User;

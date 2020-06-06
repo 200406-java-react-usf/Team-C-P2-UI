@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
 	
 	loginContainer: {
 		backgroundImage: "url('https://cdn.discordapp.com/attachments/713513695644483594/717748604277620806/rainbow-falls-river-morning-sunrise-kerikeri.png')",
-		height: "100vh",
+		height: "calc(100vh - 64px)",
 		backgroundPosition: "center",
 		backgroundRepeat: "no-repeat",
 		backgroundSize: "cover",
@@ -57,6 +57,10 @@ const useStyles = makeStyles((theme: Theme) =>
 	  pos: {
 		marginBottom: 12,
 	  },
+	  button: {
+		backgroundColor: '#0A3729',
+		color: '#FAFDFC'
+	}
 }));
 
 
@@ -99,19 +103,19 @@ function LoginComponent(props: ILoginProps) {
 				<CardContent>
 					<div>
 					<form className={classes.form} noValidate autoComplete="off" >
-						<TextField style ={{backgroundColor:'white'}}onChange={updateLoginForm} id="username" label="Username" variant="outlined" />
+						<TextField style ={{backgroundColor:'white'}}onChange={updateLoginForm} id="username" placeholder="Username" variant="outlined" />
 							<br/><br/>
-						<TextField style = {{backgroundColor:'white'}}onChange={updateLoginForm} id="password" label="Password" type="password" variant="outlined" />
+						<TextField style = {{backgroundColor:'white'}}onChange={updateLoginForm} id="password" placeholder="Password" type="password" variant="outlined" />
 					</form>
 							<br/><br/>
 						<Link to="/login" className={classes.link}> 
-							<Button onClick={login} variant="contained">LOGIN</Button>
+							<Button className={ classes.button } onClick={login} variant="contained">LOGIN</Button>
 						</Link><br/><br/>
 						<Link to="/register" className={classes.link}> 
-							<Button onClick={register} variant="contained">REGISTER</Button>
+							<Button className={ classes.button } onClick={register} variant="contained">REGISTER</Button>
 						</Link>
 						<br/><br/>
-						{	props.errorMessage ? <Alert severity="error" variant="outlined">{props.errorMessage}</Alert> : <></> }
+						{	props.errorMessage ? <Alert severity="error" variant="outlined" style={{color:'#f44336'}}>{props.errorMessage}</Alert> : <></> }
 					</div>
 				</CardContent>
 
