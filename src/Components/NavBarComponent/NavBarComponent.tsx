@@ -141,7 +141,7 @@ function NavBarComponent(props: INavBarProps) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Travel App
+            Travel Recommendations App
           </Typography>
         </Toolbar>
       </AppBar>

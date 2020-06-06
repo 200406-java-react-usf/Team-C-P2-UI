@@ -18,7 +18,8 @@ const useStyles = makeStyles((theme: Theme) =>
 			margin: 'auto',
 			marginTop: 40,
 			padding: 20,
-			maxWidth: '50%'
+			maxWidth: '50%',
+			backgroundColor: '#48967D'
 		},
 		root: {
 			'& > *': {
@@ -41,6 +42,10 @@ const useStyles = makeStyles((theme: Theme) =>
 			textAlign: 'left',
 			paddingBottom: '.5em',
 			marginLeft: '1em'
+		},
+		button: {
+			backgroundColor: '#0A3729',
+			color: '#FAFDFC'
 		}
 	}));
 
@@ -124,7 +129,7 @@ function CreateTicketComponent(props: ICreateTicketProps) {
 					
 				</form>
 				
-					<Button onClick={addTicket} variant="contained">CREATE TICKET</Button>
+					<Button className={classes.button} onClick={addTicket} variant="contained">CREATE TICKET</Button>
 
 				{errorMessage ? <Alert severity="error" variant="outlined">{errorMessage}</Alert> : <></> }
 			</Grid>

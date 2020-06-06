@@ -64,7 +64,6 @@ const tableIcons = {
 
 const useStyles = makeStyles({
 	Container: {
-		display: "flex",
         justifyContent: "center",
         margin: 'auto',
         marginTop: 40,

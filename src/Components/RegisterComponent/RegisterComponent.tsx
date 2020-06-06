@@ -29,7 +29,9 @@ const useStyles = makeStyles((theme: Theme) =>
 			  maxwidth: '25ch',
 			},
 			textAlign: 'center',
-			maxWidth: '50%'
+			maxWidth: '50%',
+			backgroundColor:'#48967D',
+
 		}, 
 		form: {
 			justifyContent: 'center',
@@ -95,7 +97,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 			if(password !== verify_password) {
 				setErrorMessage('Passwords must match')
-			}
+			}else {
 
 			let newUser = new NewUser(firstName, lastName, username, password, email);
 			
@@ -106,6 +108,7 @@ const useStyles = makeStyles((theme: Theme) =>
 			}
 			await login(newUser.username, newUser.password);
 			return (<Redirect to="/home" />)
+			}
 		}
 
 		const login = async (un: string, pw: string) => {
