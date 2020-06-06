@@ -9,6 +9,7 @@ import { User } from '../../dtos/user';
 
 interface IRegisterProps {
 	authUser: User;
+	errorMessage: string;
 	loginAction: (username: string, password: string) => void;
 }
 
@@ -62,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		const [password, setPassword] = useState('');
 		const [verify_password, setVerifyPassword] = useState('');
 		const [email, setEmail] = useState('');
-		const [errorMessage, setErrorMessage] = useState('');
+		const [passwordMatch, setPasswordMatch] = useState('');
 
 		/**
 		 * Takes in a target element and updates the stae of the registration form fields
@@ -96,7 +97,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		const register = async() => {
 
 			if(password !== verify_password) {
-				setErrorMessage('Passwords must match')
+				setPasswordMatch('Passwords must match')
 			}else {
 
 			let newUser = new NewUser(firstName, lastName, username, password, email);
@@ -104,7 +105,7 @@ const useStyles = makeStyles((theme: Theme) =>
 			try {
 			await save(newUser);
 			} catch (e) {
-				setErrorMessage(e.response.data.cause)
+				setPasswordMatch(e.response.data.cause)
 			}
 			await login(newUser.username, newUser.password);
 			return (<Redirect to="/home" />)
@@ -136,7 +137,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 					<Button className={classes.button} onClick={register} variant="contained">REGISTER</Button>
 
-				{	errorMessage ? <Alert severity="error" variant="outlined">{errorMessage}</Alert> : <></> }
+				{	passwordMatch ? <Alert severity="error" variant="outlined">{passwordMatch}</Alert> : <></> }
+				{	props.errorMessage ? <Alert severity="error" variant="outlined">{props.errorMessage}</Alert> : <></> }
 			</Grid>
 		</Card>
 		}	
