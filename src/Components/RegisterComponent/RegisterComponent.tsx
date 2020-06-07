@@ -104,11 +104,12 @@ const useStyles = makeStyles((theme: Theme) =>
 			
 			try {
 			await save(newUser);
-			} catch (e) {
-				setPasswordMatch(e.response.data.cause)
-			}
 			await login(newUser.username, newUser.password);
 			return (<Redirect to="/home" />)
+			} catch (e) {
+				setPasswordMatch(e.response.data.message)
+			}
+			
 			}
 		}
 
