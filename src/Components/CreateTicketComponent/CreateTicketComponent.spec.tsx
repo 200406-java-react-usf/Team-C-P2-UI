@@ -67,10 +67,10 @@ describe('CreateTicketComponent', () => {
         let wrapper = mount(createTicketComponent);
         //For some reason, .find(#cost) gets all TextFields, where as it should only get the one
         //with its ID.
-        console.log(wrapper.find('#cost').text())
-        wrapper.find(TextField).simulate('change', {
-            target: { value: 100.00 }
-        });
+        console.log(wrapper.find('#cost'))
+        // wrapper.find(TextField).simulate('change', {
+        //     target: { value: 100.00 }
+        // });
         //expect(wrapper.find((TextField)).prop('value')).toEqual(100.00);
     });
 
