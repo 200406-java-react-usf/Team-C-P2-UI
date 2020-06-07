@@ -1,3 +1,8 @@
+/**
+ * LoginComponent helps render the login page for the client to sign in using username and password.
+ * Has a login button to navigate to the home page and a register button to direct to the 
+ * registration page
+ */
 import React, { useState } from 'react';
 import { User } from '../../dtos/user';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
@@ -7,6 +12,9 @@ import { Link, Redirect, useHistory } from 'react-router-dom';
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+
+import OptimizedRainbowFallsRiverMorningSunriseKerikeri from '../../image/OptimizedRainbowFallsRiverMorningSunriseKerikeri.png';
+
 
 interface ILoginProps {
 	authUser: User;
@@ -18,7 +26,8 @@ const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 	
 	loginContainer: {
-		backgroundImage: "url('https://cdn.discordapp.com/attachments/713513695644483594/717748604277620806/rainbow-falls-river-morning-sunrise-kerikeri.png')",
+		// backgroundImage: "url('https://cdn.discordapp.com/attachments/713513695644483594/717748604277620806/rainbow-falls-river-morning-sunrise-kerikeri.png')",
+		backgroundImage: `url(${OptimizedRainbowFallsRiverMorningSunriseKerikeri})`,
 		height: "calc(100vh - 64px)",
 		backgroundPosition: "center",
 		backgroundRepeat: "no-repeat",
@@ -88,7 +97,7 @@ function LoginComponent(props: ILoginProps) {
 				console.warn(`Improper binding detected on element with id: ${e.target.id}`);
 		}
 	}
-
+	
 	const login = async () => {
 		props.loginAction(username, password);
 		console.log('Login Button Clicked');
