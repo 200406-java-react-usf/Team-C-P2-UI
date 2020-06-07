@@ -16,8 +16,8 @@ import CardContent from '@material-ui/core/CardContent';
 import OptimizedRainbowFallsRiverMorningSunriseKerikeri from '../../image/OptimizedRainbowFallsRiverMorningSunriseKerikeri.png';
 
 
-interface ILoginProps {
-	authUser: User;
+export interface ILoginProps {
+	authUser: User | undefined;
 	errorMessage: String;
 	loginAction: (username: string, password: string) => void;
 }
